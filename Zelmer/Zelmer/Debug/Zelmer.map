@@ -10,7 +10,7 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
- .text.Soft_Start_Run_to_Max
+ .text.Soft_Start_and_Run_to_Max
                 0x00000000        0x2 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
@@ -378,11 +378,11 @@ END GROUP
  *(.debug_frame)
  .debug_frame   0x00000000       0x34 main.o
 
-.debug_str      0x00000000      0x2a5
+.debug_str      0x00000000      0x2a9
  *(.debug_str)
  .debug_str     0x00000000      0x17b C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
- .debug_str     0x0000017b      0x12a main.o
-                                0x15e (size before relaxing)
+ .debug_str     0x0000017b      0x12e main.o
+                                0x162 (size before relaxing)
 
 .debug_loc
  *(.debug_loc)
