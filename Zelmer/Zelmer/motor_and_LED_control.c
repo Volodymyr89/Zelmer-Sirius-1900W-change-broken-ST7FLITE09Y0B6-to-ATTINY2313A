@@ -1,5 +1,7 @@
 #include <avr/io.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include "motor_and_LED_control.h"
 
 // set LEDs macros
 #define CNT0MAX (255)
@@ -15,6 +17,7 @@
 #define RESET_LED3  DDRB &= ~(1 << DDB1)
 #define RESET_LED4  DDRB &= ~(1 << DDB0)
 
+ uint8_t currentLEDnumber=0;
 
 uint8_t Delay_100ms (void){
 	uint32_t delay = 100000;
@@ -24,39 +27,28 @@ uint8_t Delay_100ms (void){
 	return return_status;
 }
 
-void Soft_Start_and_Run_to_Max(void){
-	uint8_t duty_cycle = 10;
-	
-	SET_LED0;// turn ON LED0
-	
-	for(uint8_t step=0; step<25; step++){
-		if(OCR0B<CNT0MAX){
-			OCR0B = duty_cycle;
-			Delay_100ms();
-			duty_cycle+=10;
-		}
-		else{
-			OCR0B=CNT0MAX;
+uint8_t Set_LED(void){
+	static uint8_t LED=0;
+	LED+=1;
+	if(LED<4){
+		switch(LED){
+			case 1:
+			SET_LED1;
+			break;
+			case 2:
+			SET_LED2;
+			break;
+			case 3:
+			SET_LED3;
+			break;
+			case 4:
+			SET_LED4;
+			break;
 		}
 	}
+		return LED;
 }
 
-void Set_LED(uint8_t LED){
-	switch(LED){
-		case 2:
-		SET_LED1;
-		break;
-		case 3:
-		SET_LED2;
-		break;
-		case 4:
-		SET_LED3;
-		break;
-		case 5:
-		SET_LED4;
-		break;
-	}
-}
 void ReSet_LED(uint8_t LED){
 	switch(LED){
 		case 1:
@@ -74,18 +66,24 @@ void ReSet_LED(uint8_t LED){
 	}
 }
 
-void Set_LED_Bar(bool increment){
-	static uint8_t LED_num=1;
-	if(increment){
-		if(LED_num<5)
-		LED_num+=1;
-		Set_LED(LED_num);
+void Soft_Start_and_Run_to_Max(void){
+	uint8_t duty_cycle = 10;
+	SET_LED0;// turn ON LED0
+	for(uint8_t step=0; step<25; step++){
+		uint8_t cnt=0;// divider
+		if(OCR0B<CNT0MAX){
+			OCR0B=duty_cycle;
+			Delay_100ms();
+			duty_cycle+=10;
+			cnt++;
+			if(cnt>=5){
+				currentLEDnumber=Set_LED();
+			}
+		}
+		else if (OCR0B>=250){
+			OCR0B=CNT0MAX;
+		}
 	}
-	else{
-		if(LED_num>1)
-		LED_num-=1;
-	}
-	
 }
 
 

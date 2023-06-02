@@ -7,10 +7,15 @@ void Output_Pins_Init(void){
 	 DDRD |= (1 << DDD5); // PD5 as output for TMR0
 	 PORTD &= ~(1 << DDD5); // set to zero
 	 DDRB |= (1 << DDB4); // LED0
+	 PORTB &= ~(1 << DDB4); // set to zero
 	 DDRB |= (1 << DDB3); // LED1
+	 PORTB &= ~(1 << DDB3); // set to zero
 	 DDRB |= (1 << DDB2); // LED2
+	 PORTB &= ~(1 << DDB2); // set to zero
 	 DDRB |= (1 << DDB1); // LED3
+	 PORTB &= ~(1 << DDB1); // set to zero
 	 DDRB |= (1 << DDB0); // LED4
+	 PORTB &= ~(1 << DDB0); // set to zero
 }
 
 // init input PINs

@@ -4,6 +4,6 @@
 // function prototypes
 void Output_Pins_Init(void);
 void Input_Pins_Init(void);
-void Timer_Init0(void);
+void Timer0_Init(void);
 
 #endif
