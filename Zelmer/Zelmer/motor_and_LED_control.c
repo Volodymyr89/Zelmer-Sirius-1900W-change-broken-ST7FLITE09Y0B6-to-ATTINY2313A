@@ -3,19 +3,26 @@
 #include <stdint.h>
 #include "motor_and_LED_control.h"
 
+// set CNT0MAX 
+#if !defined (CNT0MAX)
+	#define CNT0MAX (255)
+#endif
+	
 // set LEDs macros
-#define CNT0MAX (255)
-#define SET_LED0  DDRB |= (1 << DDB4)
-#define SET_LED1  DDRB |= (1 << DDB3)
-#define SET_LED2  DDRB |= (1 << DDB2)
-#define SET_LED3  DDRB |= (1 << DDB1)
-#define SET_LED4  DDRB |= (1 << DDB0)
-// reset LEDs macros
-#define RESET_LED0  DDRB &= ~(1 << DDB4)
-#define RESET_LED1  DDRB &= ~(1 << DDB3)
-#define RESET_LED2  DDRB &= ~(1 << DDB2)
-#define RESET_LED3  DDRB &= ~(1 << DDB1)
-#define RESET_LED4  DDRB &= ~(1 << DDB0)
+#if !defined (SET_LED0) || !defined (SET_LED1) || !defined (SET_LED2) || !defined (SET_LED3) || !defined (SET_LED4)
+	#define SET_LED0  DDRB |= (1 << DDB4)
+	#define SET_LED1  DDRB |= (1 << DDB3)
+	#define SET_LED2  DDRB |= (1 << DDB2)
+	#define SET_LED3  DDRB |= (1 << DDB1)
+	#define SET_LED4  DDRB |= (1 << DDB0)
+	// reset LEDs macros
+	#define RESET_LED0  DDRB &= ~(1 << DDB4)
+	#define RESET_LED1  DDRB &= ~(1 << DDB3)
+	#define RESET_LED2  DDRB &= ~(1 << DDB2)
+	#define RESET_LED3  DDRB &= ~(1 << DDB1)
+	#define RESET_LED4  DDRB &= ~(1 << DDB0)
+#endif
+
 
  uint8_t currentLEDnumber=0;
 
