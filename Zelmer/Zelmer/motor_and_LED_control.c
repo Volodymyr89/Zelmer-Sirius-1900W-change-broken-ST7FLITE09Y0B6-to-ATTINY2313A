@@ -4,8 +4,11 @@
 #include "motor_and_LED_control.h"
 
 // set CNT0MAX 
-#if !defined (CNT0MAX)
-	#define CNT0MAX (255)
+#ifndef CNT0MAX
+	#define CNT0MAX 255
+#endif
+#ifndef CYCLENUM
+	#define CYCLENUM 25
 #endif
 	
 // set LEDs macros
@@ -76,15 +79,16 @@ void ReSet_LED(uint8_t LED){
 void Soft_Start_and_Run_to_Max(void){
 	uint8_t duty_cycle = 10;
 	SET_LED0;// turn ON LED0
-	for(uint8_t step=0; step<25; step++){
+	for(uint8_t step=0; step<CYCLENUM; step++){
 		uint8_t cnt=0;// divider
 		if(OCR0B<CNT0MAX){
 			OCR0B=duty_cycle;
-			Delay_100ms();
-			duty_cycle+=10;
-			cnt++;
-			if(cnt>=5){
-				currentLEDnumber=Set_LED();
+			if((uint8_t)0 == Delay_100ms()){
+				duty_cycle+=10;
+				cnt++;
+				if(cnt>=5){
+					currentLEDnumber=Set_LED();
+				}
 			}
 		}
 		else if (OCR0B>=250){
@@ -92,7 +96,6 @@ void Soft_Start_and_Run_to_Max(void){
 		}
 	}
 }
-
 
 void Increment_Duty_Cycle(void){
 	if(OCR0B<(uint8_t)CNT0MAX){
