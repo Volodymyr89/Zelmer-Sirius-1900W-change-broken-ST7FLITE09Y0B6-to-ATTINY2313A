@@ -1,6 +1,6 @@
 #include <avr/io.h>
-#include <stdbool.h>
 #include <stdint.h>
+#include <avr/interrupt.h>
 #include "motor_and_LED_control.h"
 
 // set CNT0MAX 
@@ -8,103 +8,86 @@
 	#define CNT0MAX 255
 #endif
 #ifndef CYCLENUM
-	#define CYCLENUM 25
-#endif
-	
-// set LEDs macros
-#if !defined (SET_LED0) || !defined (SET_LED1) || !defined (SET_LED2) || !defined (SET_LED3) || !defined (SET_LED4)
-	#define SET_LED0  DDRB |= (1 << DDB4)
-	#define SET_LED1  DDRB |= (1 << DDB3)
-	#define SET_LED2  DDRB |= (1 << DDB2)
-	#define SET_LED3  DDRB |= (1 << DDB1)
-	#define SET_LED4  DDRB |= (1 << DDB0)
-	// reset LEDs macros
-	#define RESET_LED0  DDRB &= ~(1 << DDB4)
-	#define RESET_LED1  DDRB &= ~(1 << DDB3)
-	#define RESET_LED2  DDRB &= ~(1 << DDB2)
-	#define RESET_LED3  DDRB &= ~(1 << DDB1)
-	#define RESET_LED4  DDRB &= ~(1 << DDB0)
+	#define CYCLENUM 5
 #endif
 
+volatile bool increment_flag=false, decrement_flag=false;
 
- uint8_t currentLEDnumber=0;
+ISR(INT0_vect){
+	increment_flag=true;
+}
 
-uint8_t Delay_100ms (void){
-	uint32_t delay = 100000;
+ISR(INT1_vect){
+	decrement_flag=true;
+}
+
+
+uint8_t Delay_ms(uint8_t delay){
 	uint8_t return_status = 1;
-	while(delay--){}
-	return_status= 0;
+	if(delay<=250){
+		uint8_t counterdata= (uint8_t)(delay*0.976);
+		TCNT0 = (255-counterdata);
+		while(!(TIFR&(1<<TOV0))){}// wait until counter reaches 255
+		TIFR |= 1<<TOV0;
+		return_status= 0;
+		}
 	return return_status;
 }
 
-uint8_t Set_LED(void){
-	static uint8_t LED=0;
-	LED+=1;
-	if(LED<4){
-		switch(LED){
-			case 1:
-			SET_LED1;
-			break;
-			case 2:
-			SET_LED2;
-			break;
-			case 3:
-			SET_LED3;
-			break;
-			case 4:
-			SET_LED4;
-			break;
-		}
-	}
-		return LED;
-}
-
-void ReSet_LED(uint8_t LED){
-	switch(LED){
-		case 1:
-		RESET_LED1;
-		break;
-		case 2:
-		RESET_LED2;
-		break;
-		case 3:
-		RESET_LED3;
-		break;
-		case 4:
-		RESET_LED4;
-		break;
-	}
-}
 
 void Soft_Start_and_Run_to_Max(void){
 	uint8_t duty_cycle = 10;
 	SET_LED0;// turn ON LED0
 	for(uint8_t step=0; step<CYCLENUM; step++){
-		uint8_t cnt=0;// divider
-		if(OCR0B<CNT0MAX){
-			OCR0B=duty_cycle;
-			if((uint8_t)0 == Delay_100ms()){
+			if((uint8_t)0 == Delay_ms(200)){
 				duty_cycle+=10;
-				cnt++;
-				if(cnt>=5){
-					currentLEDnumber=Set_LED();
-				}
+				Increment_decrement_Duty_Cycle(INCREMENT);
 			}
-		}
-		else if (OCR0B>=250){
-			OCR0B=CNT0MAX;
-		}
 	}
 }
 
-void Increment_Duty_Cycle(void){
-	if(OCR0B<(uint8_t)CNT0MAX){
-		OCR0B +=10;
+void Increment_decrement_Duty_Cycle(led_status_t led_status){
+	static uint8_t LED=1;
+	
+	if(led_status == INCREMENT){
+		if(LED<=4){
+			switch(LED){
+				case 1:
+				SET_LED1;
+				break;
+				case 2:
+				SET_LED2;
+				break;
+				case 3:
+				SET_LED3;
+				break;
+				case 4:
+				SET_LED4;
+				break;
+			}
+			LED++;
+		}
+	}
+	else if (led_status == DECREMENT){
+		if(LED>=1){
+			switch(LED){
+				case 1:
+				RESET_LED1;
+				break;
+				case 2:
+				RESET_LED2;
+				break;
+				case 3:
+				RESET_LED3;
+				break;
+				case 4:
+				RESET_LED4;
+				break;
+			}
+			LED--;
+		}	
 	}
 }
 
-void Decrement_Duty_Cycle(void){
-	if(OCR0B>(uint8_t)0){
-		OCR0B -=10;
-	}
-}
+
+

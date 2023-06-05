@@ -2,14 +2,40 @@
 #define _MOTOR_AND_CONTROL_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 
-extern uint8_t currentLEDnumber;
+// reset LEDs macros
+#if !defined (SET_LED0) || !defined (SET_LED1) || !defined (SET_LED2) || !defined (SET_LED3) || !defined (SET_LED4)
+	#define RESET_LED0  PORTD |= (1 << PORTD5)
+	#define RESET_LED1  PORTB |= (1 << PORTB3)
+	#define RESET_LED2  PORTB |= (1 << PORTB2)
+	#define RESET_LED3  PORTB |= (1 << PORTB1)
+	#define RESET_LED4  PORTB |= (1 << PORTB0)
+	//LEDs for filters
+	#define RESET_LED5  PORTD |= (1 << PORTD6)
+	#define RESET_LED6  PORTD |= (1 << PORTD4)
+	// set LEDs macros
+	#define SET_LED0   PORTD &= ~(1 << PORTD5)
+	#define SET_LED1   PORTB &= ~(1 << PORTB3)
+	#define SET_LED2   PORTB &= ~(1 << PORTB2)
+	#define SET_LED3   PORTB &= ~(1 << PORTB1)
+	#define SET_LED4   PORTB &= ~(1 << PORTB0)
+	//LEDs for filters
+	#define SET_LED5  PORTD &= ~(1 << PORTD6)
+	#define SET_LED6  PORTD &= ~(1 << PORTD4)
+#endif
 
-uint8_t Delay_100ms (void);
+extern volatile bool increment_flag, decrement_flag;
+typedef enum{
+	INCREMENT,
+	DECREMENT
+}led_status_t;
+
+// functions prototypes
+uint8_t Delay_ms(uint8_t delay);
 void Soft_Start_and_Run_to_Max(void);
-uint8_t Set_LED(void);
-void ReSet_LED(uint8_t LED);
+void Increment_decrement_Duty_Cycle(led_status_t led_status);
 void Increment_Duty_Cycle(void);
-void Decrement_Duty_Cycle(void);
+void Decrement_Duty_Cycle(uint8_t LED);
 
 #endif
