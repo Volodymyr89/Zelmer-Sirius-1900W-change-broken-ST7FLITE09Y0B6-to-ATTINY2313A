@@ -14,7 +14,7 @@
 	//LEDs for filters
 	#define RESET_LED5  PORTD |= (1 << PORTD6)
 	#define RESET_LED6  PORTD |= (1 << PORTD4)
-	// set LEDs macros
+// set LEDs macros
 	#define SET_LED0   PORTD &= ~(1 << PORTD5)
 	#define SET_LED1   PORTB &= ~(1 << PORTB3)
 	#define SET_LED2   PORTB &= ~(1 << PORTB2)
@@ -23,9 +23,14 @@
 	//LEDs for filters
 	#define SET_LED5  PORTD &= ~(1 << PORTD6)
 	#define SET_LED6  PORTD &= ~(1 << PORTD4)
+	
+//Timer1 PWM
+	#define SET_TMR1OUT0 PORTB |= 1 << PORTB4 
+	#define RESET_TMR1OUT0 PORTB &= ~(1 << PORTB4)
 #endif
 
 extern volatile bool increment_flag, decrement_flag;
+extern volatile uint16_t dutycyle;
 typedef enum{
 	INCREMENT,
 	DECREMENT
@@ -34,8 +39,10 @@ typedef enum{
 // functions prototypes
 uint8_t Delay_ms(uint8_t delay);
 void Soft_Start_and_Run_to_Max(void);
-void Increment_decrement_Duty_Cycle(led_status_t led_status);
+void Increment_decrement_Duty_Cycle(led_status_t led_status, bool softstart);
 void Increment_Duty_Cycle(void);
 void Decrement_Duty_Cycle(uint8_t LED);
+void Timer1_Start(void);
+void Timer1_Stop(void);
 
 #endif

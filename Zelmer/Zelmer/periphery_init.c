@@ -8,7 +8,7 @@
 void Output_Pins_Init(void){
 // PWM output
 	 DDRB |= (1 << DDB4); // as output for TMR1 PWM
-	   // set to zero
+	  RESET_TMR1OUT0;// set to zero
 // set LEDs indicating power
 	DDRD |= (1 << DDD5); // LED0
 	  RESET_LED4;// set to zero
@@ -34,16 +34,25 @@ void Input_Pins_Init(void){
 	PORTD |= 1 << PORTD2; // pull up
 	DDRD &= ~(1 << DDD3); // PD3 as input for ext interrupt
 	PORTD |= 1 << PORTD3; // pull up
+	//pins for filter sensors
+	DDRD &= ~(1 << DDD1); // PD2 as input for ext interrupt
+	PORTD |= 1 << PORTD1; // pull up
+	DDRA &= ~(1 << DDA1); // PD2 as input for ext interrupt
+	PORTA |= 1 << PORTA1; // pull up	
+	
+	//pin for ZCD
+	DDRD &= ~(1 << DDD0); // PD0 as input for zero cross detector
+	// Configure ext interrupt
+	PCMSK2 |= 1<<PCINT11;
+	GIMSK |= 1<<PCIE2;
 	
 	// Configure INT0 to trigger on falling edge
 	MCUCR |= (1 << ISC01);
 	MCUCR &= ~(1 << ISC00);
-	
 	// Configure INT1 to trigger on falling edge
 	MCUCR |= (1 << ISC11);
 	MCUCR &= ~(1 << ISC10);
 	GIMSK |= (1<<INT0) | (1<<INT1);// enable interrupts
-	sei();//enable global interrupts
 }
 
 // init timers
@@ -54,8 +63,16 @@ void Timer0_Init(void){
 }
 
 void Timer1_Init(void){
-	TCCR1A |= (1<<WGM11) | (1<<WGM10) | (1<<COM1B1); // fast PWM mode, Clear OC1A/OC1B on Compare Match, set OC1A/OC1B at TOP
-	TCCR1B |= (1<<WGM12) | (1<<CS11) | (1<<CS10); //clkI/O/64 (From prescaler)
-	OCR1BH = 10;// initial duty cycle
-	OCR1BLa = 10;
+	 TCCR1B |= (1<<WGM12);  //CTC OCR1A, 
+	 TIMSK |= (1 << OCIE1A);
+	 sei();//enable global interrupts
+
+}
+
+void Timer1_Start(void){
+	 TCCR1B |= 1<<CS10;// clkI/O/1 (No prescaling)
+}
+
+void Timer1_Stop(void){
+	TCCR1B &= ~(1<<CS10);//clkI/O/1 (No prescaling)
 }

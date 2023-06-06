@@ -8,10 +8,18 @@
 	#define CNT0MAX 255
 #endif
 #ifndef CYCLENUM
-	#define CYCLENUM 5
+	#define CYCLENUM 20
+#endif
+#ifndef DUTYCNTRL
+#define DUTYCNTRL 2000
+#endif
+
+#ifndef DUTYSOFTSTART
+#define DUTYSOFTSTART 500
 #endif
 
 volatile bool increment_flag=false, decrement_flag=false;
+volatile uint16_t dutycyle=0; 
 
 ISR(INT0_vect){
 	increment_flag=true;
@@ -21,6 +29,19 @@ ISR(INT1_vect){
 	decrement_flag=true;
 }
 
+ISR(PCINT2_vect){
+	OCR1A = dutycyle;// set duty cycle;
+	Timer1_Start();
+	SET_TMR1OUT0;
+	SET_LED5;
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	Timer1_Stop();
+	RESET_TMR1OUT0;
+	RESET_LED5;
+}
 
 uint8_t Delay_ms(uint8_t delay){
 	uint8_t return_status = 1;
@@ -36,20 +57,25 @@ uint8_t Delay_ms(uint8_t delay){
 
 
 void Soft_Start_and_Run_to_Max(void){
-	uint8_t duty_cycle = 10;
+	uint8_t cnt=0;
 	SET_LED0;// turn ON LED0
 	for(uint8_t step=0; step<CYCLENUM; step++){
 			if((uint8_t)0 == Delay_ms(200)){
-				duty_cycle+=10;
-				Increment_decrement_Duty_Cycle(INCREMENT);
+				dutycyle+=DUTYSOFTSTART;
+				cnt++;
+				if(cnt>=5){
+					Increment_decrement_Duty_Cycle(INCREMENT, true);
+					cnt=0;
+				}
 			}
-	}
+		}
 }
 
-void Increment_decrement_Duty_Cycle(led_status_t led_status){
-	static uint8_t LED=1;
+void Increment_decrement_Duty_Cycle(led_status_t led_status, bool softstart){
+	static uint8_t LED=0;
 	
 	if(led_status == INCREMENT){
+		LED++;
 		if(LED<=4){
 			switch(LED){
 				case 1:
@@ -65,22 +91,28 @@ void Increment_decrement_Duty_Cycle(led_status_t led_status){
 				SET_LED4;
 				break;
 			}
-			LED++;
+			if(softstart==false){
+				dutycyle+=DUTYCNTRL; // remove for soft start due different step during soft start 
+			}
 		}
 	}
 	else if (led_status == DECREMENT){
 		if(LED>=1){
 			switch(LED){
 				case 1:
+				dutycyle-=DUTYCNTRL;
 				RESET_LED1;
 				break;
 				case 2:
+				dutycyle-=DUTYCNTRL;
 				RESET_LED2;
 				break;
 				case 3:
+				dutycyle-=DUTYCNTRL;
 				RESET_LED3;
 				break;
 				case 4:
+				dutycyle-=DUTYCNTRL;
 				RESET_LED4;
 				break;
 			}
