@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <avr/interrupt.h>
 #include "periphery_init.h"
 #include "motor_and_LED_control.h"
 

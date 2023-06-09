@@ -1,5 +1,4 @@
 #include <avr/io.h>
-#include <avr/interrupt.h>
 #include "periphery_init.h"
 #include "motor_and_LED_control.h"
 
@@ -63,6 +62,7 @@ void Timer0_Init(void){
 }
 
 void Timer1_Init(void){
+	 OCR1A = delay;
 	 TCCR1B |= (1<<WGM12);  //CTC OCR1A, 
 	 TIMSK |= (1 << OCIE1A);
 }

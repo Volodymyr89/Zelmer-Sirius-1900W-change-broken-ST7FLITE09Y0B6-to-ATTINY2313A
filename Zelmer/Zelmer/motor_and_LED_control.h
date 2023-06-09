@@ -30,7 +30,8 @@
 #endif
 
 extern volatile bool increment_flag, decrement_flag;
-extern volatile uint16_t dutycyle;
+extern volatile uint16_t delay
+; 
 typedef enum{
 	INCREMENT,
 	DECREMENT

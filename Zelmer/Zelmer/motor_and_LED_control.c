@@ -10,26 +10,34 @@
 #ifndef CYCLENUM
 	#define CYCLENUM 20
 #endif
-#ifndef DUTYCNTRL
-#define DUTYCNTRL 2000
+#ifndef DELAYCNTRL
+#define DELAYCNTRL 2000
 #endif
 
-#ifndef DUTYSOFTSTART
-#define DUTYSOFTSTART 500
+#ifndef DELAYSOFTSTART
+#define DELAYSOFTSTART 400
+#endif
+
+#ifndef DELAYMAX
+#define DELAYMAX 9000
+#endif
+
+#ifndef DELAYMIN
+#define DELAYMIN 1000
 #endif
 
 volatile bool increment_flag=false, decrement_flag=false;
-volatile uint16_t dutycyle=100; 
+volatile uint16_t delay=DELAYMAX;
 
 void Short_delay(void){
-	volatile uint16_t delay=1000;
+	volatile uint16_t delay=600;
 	while(delay--){}
 }
 
 void Short_Pulse(void){	
-SET_TMR1OUT0;
-Short_delay();
-RESET_TMR1OUT0;
+	SET_TMR1OUT0;
+	Short_delay();
+	RESET_TMR1OUT0;
 }
 
 ISR(INT0_vect){
@@ -41,7 +49,7 @@ ISR(INT1_vect){
 }
 
 ISR(PCINT2_vect){
-	OCR1A = dutycyle;// set duty cycle;
+	OCR1A = delay;// set delay time;
 	Timer1_Start();
 }
 
@@ -67,11 +75,9 @@ uint8_t Delay_ms(uint8_t delay){
 void Soft_Start_and_Run_to_Max(void){
 	uint8_t cnt=0;
 	SET_LED0;// turn ON LED0
-	dutycyle=100;//DUTYSOFTSTART;
-	/*
 	for(uint8_t step=0; step<CYCLENUM; step++){
 			if((uint8_t)0 == Delay_ms(200)){
-				dutycyle+=DUTYSOFTSTART;
+				delay-=DELAYSOFTSTART;
 				cnt++;
 				if(cnt>=5){
 					Increment_decrement_Duty_Cycle(INCREMENT, true);
@@ -79,15 +85,14 @@ void Soft_Start_and_Run_to_Max(void){
 				}
 			}
 		}
-		*/
+	
 }
 
 void Increment_decrement_Duty_Cycle(led_status_t led_status, bool softstart){
-	static uint8_t LED=0;
-	
+	static uint8_t LED=0;	
 	if(led_status == INCREMENT){
 		LED++;
-		if(LED<=4){
+		if(LED<=4 && delay>=DELAYMIN){
 			switch(LED){
 				case 1:
 				SET_LED1;
@@ -103,30 +108,27 @@ void Increment_decrement_Duty_Cycle(led_status_t led_status, bool softstart){
 				break;
 			}
 			if(softstart==false){
-				dutycyle+=DUTYCNTRL; // remove for soft start due different step during soft start 
+				delay-=DELAYCNTRL; // remove for soft start due different step during soft start 
 			}
 		}
 	}
 	else if (led_status == DECREMENT){
-		if(LED>=1){
+		if(LED>=1 && delay<=DELAYMAX){
 			switch(LED){
 				case 1:
-				dutycyle-=DUTYCNTRL;
 				RESET_LED1;
 				break;
 				case 2:
-				dutycyle-=DUTYCNTRL;
 				RESET_LED2;
 				break;
 				case 3:
-				dutycyle-=DUTYCNTRL;
 				RESET_LED3;
 				break;
 				case 4:
-				dutycyle-=DUTYCNTRL;
 				RESET_LED4;
 				break;
 			}
+			delay+=DELAYCNTRL;
 			LED--;
 		}	
 	}
