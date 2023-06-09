@@ -8,7 +8,7 @@
 void Output_Pins_Init(void){
 // PWM output
 	 DDRB |= (1 << DDB4); // as output for TMR1 PWM
-	  RESET_TMR1OUT0;// set to zero
+	 RESET_TMR1OUT0;// set to zero
 // set LEDs indicating power
 	DDRD |= (1 << DDD5); // LED0
 	  RESET_LED4;// set to zero
@@ -65,8 +65,6 @@ void Timer0_Init(void){
 void Timer1_Init(void){
 	 TCCR1B |= (1<<WGM12);  //CTC OCR1A, 
 	 TIMSK |= (1 << OCIE1A);
-	 sei();//enable global interrupts
-
 }
 
 void Timer1_Start(void){

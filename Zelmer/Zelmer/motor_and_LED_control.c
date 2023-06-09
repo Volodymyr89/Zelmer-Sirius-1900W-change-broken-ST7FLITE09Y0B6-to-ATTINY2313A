@@ -19,7 +19,18 @@
 #endif
 
 volatile bool increment_flag=false, decrement_flag=false;
-volatile uint16_t dutycyle=0; 
+volatile uint16_t dutycyle=100; 
+
+void Short_delay(void){
+	volatile uint16_t delay=1000;
+	while(delay--){}
+}
+
+void Short_Pulse(void){	
+SET_TMR1OUT0;
+Short_delay();
+RESET_TMR1OUT0;
+}
 
 ISR(INT0_vect){
 	increment_flag=true;
@@ -32,15 +43,12 @@ ISR(INT1_vect){
 ISR(PCINT2_vect){
 	OCR1A = dutycyle;// set duty cycle;
 	Timer1_Start();
-	SET_TMR1OUT0;
-	SET_LED5;
 }
 
 ISR(TIMER1_COMPA_vect)
 {
 	Timer1_Stop();
-	RESET_TMR1OUT0;
-	RESET_LED5;
+	Short_Pulse();
 }
 
 uint8_t Delay_ms(uint8_t delay){
@@ -59,6 +67,8 @@ uint8_t Delay_ms(uint8_t delay){
 void Soft_Start_and_Run_to_Max(void){
 	uint8_t cnt=0;
 	SET_LED0;// turn ON LED0
+	dutycyle=100;//DUTYSOFTSTART;
+	/*
 	for(uint8_t step=0; step<CYCLENUM; step++){
 			if((uint8_t)0 == Delay_ms(200)){
 				dutycyle+=DUTYSOFTSTART;
@@ -69,6 +79,7 @@ void Soft_Start_and_Run_to_Max(void){
 				}
 			}
 		}
+		*/
 }
 
 void Increment_decrement_Duty_Cycle(led_status_t led_status, bool softstart){

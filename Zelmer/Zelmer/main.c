@@ -20,6 +20,7 @@ int main(void)
 	Input_Pins_Init();
 	Timer0_Init();
 	Timer1_Init();
+	sei();//enable global interrupts
 	Soft_Start_and_Run_to_Max();
     while (1) 
     {
