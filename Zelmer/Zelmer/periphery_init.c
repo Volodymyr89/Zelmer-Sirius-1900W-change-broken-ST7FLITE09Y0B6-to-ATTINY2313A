@@ -7,7 +7,7 @@
 void Output_Pins_Init(void){
 // PWM output
 	 DDRB |= (1 << DDB4); // as output for TMR1 PWM
-	 RESET_TMR1OUT0;// set to zero
+	 SET_TMR1OUT0;// set to zero
 // set LEDs indicating power
 	DDRD |= (1 << DDD5); // LED0
 	  RESET_LED4;// set to zero
@@ -20,10 +20,13 @@ void Output_Pins_Init(void){
 	 DDRB |= (1 << DDB0); // LED4
 	  RESET_LED0;// set to zero
 	 //another set of LEDs indicating filters statuses
-	 DDRD |= (1 << DDD6); // LED5
+	 DDRD |= (1 << DDD6); // LED5 brush filter
 	  RESET_LED5;// set to zero
 	 DDRD |= (1 << DDD4); // LED6
 	  RESET_LED6;// set to zero
+	  // brush socket control
+	 DDRB |= (1 << DDB7); // socket
+	 RESET_SOCKET;// set to zero 
 }
 
 // init input PINs
@@ -34,10 +37,12 @@ void Input_Pins_Init(void){
 	DDRD &= ~(1 << DDD3); // PD3 as input for ext interrupt
 	PORTD |= 1 << PORTD3; // pull up
 	//pins for filter sensors
-	DDRD &= ~(1 << DDD1); // PD2 as input for ext interrupt
+	DDRD &= ~(1 << DDD1); // PD1 as input 
 	PORTD |= 1 << PORTD1; // pull up
-	DDRA &= ~(1 << DDA1); // PD2 as input for ext interrupt
-	PORTA |= 1 << PORTA1; // pull up	
+	DDRA &= ~(1 << DDA1); // PA1 as input for "Worek" brush filter
+	PORTA |= 1 << PORTA1; // pull up
+	DDRA &= ~(1 << DDA0); // PA0 as input for "brush holder"
+	PORTA |= 1 << PORTA0; // pull up
 	
 	//pin for ZCD
 	DDRD &= ~(1 << DDD0); // PD0 as input for zero cross detector
@@ -62,7 +67,6 @@ void Timer0_Init(void){
 }
 
 void Timer1_Init(void){
-	 OCR1A = delay;
 	 TCCR1B |= (1<<WGM12);  //CTC OCR1A, 
 	 TIMSK |= (1 << OCIE1A);
 }
