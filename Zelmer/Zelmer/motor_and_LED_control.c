@@ -12,31 +12,27 @@
 	#define DELAYCNTRL 1625
 #endif
 
-#ifndef DELAYCNTRLSOFTTRANSITION
-	#define DELAYCNTRLSOFTTRANSITION (DELAYCNTRL/25)
-#endif
-
 #ifndef DELAYSOFTSTART
-	#define DELAYSOFTSTART 365
+	#define DELAYSOFTSTART 370
 #endif
 
 #ifndef DELAYMAXSOFTSTART
-	#define DELAYMAXSOFTSTART 8300
+	#define DELAYMAXSOFTSTART 8000
 #endif
 
 #ifndef DELAYMAX
-	#define DELAYMAX 7500
+	#define DELAYMAX 7000
 #endif
 
 #ifndef DELAYMIN
-	#define DELAYMIN 1000
+	#define DELAYMIN 600
 #endif
 
 volatile bool increment_flag=false, decrement_flag=false, increment_flag_LED=false, decrement_flag_LED=false;
 volatile uint16_t TRIACdelay;
-volatile bool SoftStart = false;
-volatile uint8_t softtransition_step_increment=25, softtransition_step_decrement=25;
-volatile uint8_t LED=0;	
+volatile bool SoftStart=false, set_power_max=false;
+volatile uint8_t LED=0;
+volatile uint8_t target_delay=DELAYMIN;
 
  void Short_Pulse(void){	
 	volatile uint16_t delay=10;
@@ -58,34 +54,33 @@ ISR(PCINT2_vect){
 		OCR1A = TRIACdelay;// set delay time;
 	}
 	else if (increment_flag==true){
-		if(softtransition_step_increment--){
-			if(OCR1A>1000){
+			if((OCR1A>DELAYMIN)&&(OCR1A>target_delay)){
 				OCR1A -=DELAYCNTRLSOFTTRANSITION;
 			}
-		}
-		else{
-			increment_flag=false;
-			softtransition_step_increment = 25; // reset value
-		}
+			else{
+				increment_flag=false;
+			}
 	}
 	else if (decrement_flag==true){
-		if(softtransition_step_decrement--){
-			if(OCR1A<7500){
-				OCR1A +=DELAYCNTRLSOFTTRANSITION;
+				if((OCR1A<DELAYMAX)&&(OCR1A<target_delay)){
+					OCR1A +=DELAYCNTRLSOFTTRANSITION;
+				}
+				else{
+					decrement_flag=false;
+				}
 			}
-		}
-		else{
-			decrement_flag=false;
-			softtransition_step_decrement = 25; // reset value
-		}
-	}
 	Timer1_Start();
 }
 
 ISR(TIMER1_COMPA_vect)
 {
 	Timer1_Stop();
-	Short_Pulse();
+	if(set_power_max==true){
+		RESET_TMR1OUT0; // set max power
+	}
+	else{
+		Short_Pulse();
+	}
 }
 
 uint8_t Delay_ms(uint8_t delay, uint8_t reset){
@@ -109,7 +104,7 @@ void Soft_Start_and_Run_to_Max(void){
 	SoftStart=true;
 	SET_LED0;// turn ON LED0
 	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>DELAYMIN; TRIACdelay-=DELAYSOFTSTART){
-			if((uint8_t)0 == Delay_ms(150, 0)){
+			if((uint8_t)0 == Delay_ms(60, 0)){
 				cnt++;
 				if(cnt>=5){
 					Increment_decrement_LED(INCREMENT);
@@ -117,6 +112,7 @@ void Soft_Start_and_Run_to_Max(void){
 				}
 			}
 		}
+	set_power_max=true;
 	SoftStart=false;
 }
 
