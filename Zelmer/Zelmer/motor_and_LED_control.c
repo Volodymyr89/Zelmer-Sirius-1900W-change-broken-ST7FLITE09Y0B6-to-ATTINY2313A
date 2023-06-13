@@ -9,7 +9,7 @@
 #endif
 
 #ifndef DELAYCNTRL
-	#define DELAYCNTRL 1625
+	#define DELAYCNTRL 1600
 #endif
 
 #ifndef DELAYSOFTSTART
@@ -55,7 +55,7 @@ ISR(PCINT2_vect){
 	}
 	else if (increment_flag==true){
 			if((OCR1A>DELAYMIN)&&(OCR1A>target_delay)){
-				OCR1A -=DELAYCNTRLSOFTTRANSITION;
+				OCR1A -=DELAYCNTRL;
 			}
 			else{
 				increment_flag=false;
@@ -63,7 +63,7 @@ ISR(PCINT2_vect){
 	}
 	else if (decrement_flag==true){
 			 if((OCR1A<DELAYMAX)&&(OCR1A<target_delay)){
-				OCR1A +=DELAYCNTRLSOFTTRANSITION;
+				OCR1A +=DELAYCNTRL;
 			}
 			else{
 				decrement_flag=false;

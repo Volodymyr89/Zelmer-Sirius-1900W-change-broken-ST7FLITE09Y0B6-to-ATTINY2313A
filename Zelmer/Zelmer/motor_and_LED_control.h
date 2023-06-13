@@ -8,6 +8,7 @@
 #define DELAYCNTRLSOFTTRANSITION 10
 #endif
 
+
 // reset LEDs macros
 #if !defined (SET_LED0) || !defined (SET_LED1) || !defined (SET_LED2) || !defined (SET_LED3) || !defined (SET_LED4)
 	#define RESET_LED0  PORTD |= (1 << PORTD5)
