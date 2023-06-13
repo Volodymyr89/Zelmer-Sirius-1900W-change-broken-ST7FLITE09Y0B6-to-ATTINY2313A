@@ -39,15 +39,10 @@ int main(void)
 			}
 		else if(decrement_flag_LED==true && increment_flag_LED==false){
 			while((uint8_t)1==Delay_ms(100,(PIND&(1<<PIND3)))){}
-				if(set_power_max==true){
-					set_power_max=false;
-				}
-				else{
 					target_delay+=DELAYCNTRLSOFTTRANSITION;
 					decrement_flag=true;
 					decrement_flag_LED=false;
 					Increment_decrement_LED(DECREMENT);
-				}
 			}
 		if(!(PINA&(1<<PINA1))){
 				SET_LED5;// set LED

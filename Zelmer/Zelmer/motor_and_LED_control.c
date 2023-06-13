@@ -32,7 +32,7 @@ volatile bool increment_flag=false, decrement_flag=false, increment_flag_LED=fal
 volatile uint16_t TRIACdelay;
 volatile bool SoftStart=false, set_power_max=false;
 volatile uint8_t LED=0;
-volatile uint8_t target_delay=DELAYMIN;
+volatile uint16_t target_delay=DELAYMIN;
 
  void Short_Pulse(void){	
 	volatile uint16_t delay=10;
@@ -62,13 +62,16 @@ ISR(PCINT2_vect){
 			}
 	}
 	else if (decrement_flag==true){
-				if((OCR1A<DELAYMAX)&&(OCR1A<target_delay)){
-					OCR1A +=DELAYCNTRLSOFTTRANSITION;
-				}
-				else{
-					decrement_flag=false;
-				}
+			if(set_power_max==true){
+				set_power_max=false;
 			}
+			else if((OCR1A<DELAYMAX)&&(OCR1A<target_delay)){
+				OCR1A +=DELAYCNTRLSOFTTRANSITION;
+			}
+			else{
+				decrement_flag=false;
+			}
+		}
 	Timer1_Start();
 }
 
