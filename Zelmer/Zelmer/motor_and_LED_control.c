@@ -62,10 +62,7 @@ ISR(PCINT2_vect){
 			}
 	}
 	else if (decrement_flag==true){
-			if(set_power_max==true){
-				set_power_max=false;
-			}
-			else if((OCR1A<DELAYMAX)&&(OCR1A<target_delay)){
+			 if((OCR1A<DELAYMAX)&&(OCR1A<target_delay)){
 				OCR1A +=DELAYCNTRLSOFTTRANSITION;
 			}
 			else{
@@ -107,7 +104,7 @@ void Soft_Start_and_Run_to_Max(void){
 	SoftStart=true;
 	SET_LED0;// turn ON LED0
 	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>DELAYMIN; TRIACdelay-=DELAYSOFTSTART){
-			if((uint8_t)0 == Delay_ms(60, 0)){
+			if((uint8_t)0 == Delay_ms(80, 0)){
 				cnt++;
 				if(cnt>=5){
 					Increment_decrement_LED(INCREMENT);
