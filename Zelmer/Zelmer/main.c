@@ -32,6 +32,7 @@ int main(void)
     {
 		if((increment_flag_LED==true) && (decrement_flag_LED==false) && (!(PIND&(1<<PIND2)))){
 			while((uint8_t)1==Delay_ms(100,(PIND&(1<<PIND2)))){}
+				target_delay=OCR1A;
 				target_delay-=DELAYCNTRLSOFTTRANSITION;
 				increment_flag=true;
 				increment_flag_LED=false;
@@ -43,7 +44,7 @@ int main(void)
 				set_power_max=false;
 			}
 			else{	
-				target_delay+=DELAYCNTRLSOFTTRANSITION;
+				target_delay+=DELAYCNTRLSOFTTRANSITION+OCR1A;
 				decrement_flag=true;
 				decrement_flag_LED=false;
 				Increment_decrement_LED(DECREMENT);

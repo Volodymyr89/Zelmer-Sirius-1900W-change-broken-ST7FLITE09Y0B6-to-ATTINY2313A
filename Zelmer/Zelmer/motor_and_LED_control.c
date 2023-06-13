@@ -104,7 +104,7 @@ void Soft_Start_and_Run_to_Max(void){
 	SoftStart=true;
 	SET_LED0;// turn ON LED0
 	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>DELAYMIN; TRIACdelay-=DELAYSOFTSTART){
-			if((uint8_t)0 == Delay_ms(80, 0)){
+			if((uint8_t)0 == Delay_ms(100, 0)){
 				cnt++;
 				if(cnt>=5){
 					Increment_decrement_LED(INCREMENT);
