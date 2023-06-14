@@ -46,15 +46,13 @@ int main(void)
 			while((uint8_t)1==Delay_ms(100,(PIND&(1<<PIND3)))){}
 			if(set_power_max==true){
 				set_power_max=false;
-				decrement_flag_LED=false;
-				Increment_decrement_LED(DECREMENT);
 			}
 			else{	
 				TRIACdelay+=(uint16_t)(DELAYCNTRL+OCR1A);
 				decrement_flag=true;
-				decrement_flag_LED=false;
-				Increment_decrement_LED(DECREMENT);
 			}
+			Increment_decrement_LED(DECREMENT);
+			decrement_flag_LED=false;
 		}
 		if(!(PINA&(1<<PINA1))){
 				SET_LED5;// set LED
