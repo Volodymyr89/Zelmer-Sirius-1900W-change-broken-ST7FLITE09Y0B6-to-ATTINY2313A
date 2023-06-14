@@ -30,26 +30,29 @@ int main(void)
 
     while (1) 
     {
-		if(increment_flag_LED==true){
+		if((increment_flag_LED==true) && (decrement_flag_LED==false) && (!(PIND&(1<<PIND2)))){
 			while((uint8_t)1==Delay_ms(100,(PIND&(1<<PIND2)))){}
-				target_delay=OCR1A;
-				target_delay-=DELAYCNTRLSOFTTRANSITION;
-				increment_flag=true;
+				TRIACdelay=(uint16_t)(OCR1A-DELAYCNTRL);
+				if(TRIACdelay<DELAYMIN){
+					set_power_max=true;	
+				}
+				else{
+					increment_flag=true;
+				}
 				increment_flag_LED=false;
 				Increment_decrement_LED(INCREMENT);
 			}
-		else if(decrement_flag_LED==true) {
+		else if((decrement_flag_LED==true) && (increment_flag_LED==false) && (!(PIND&(1<<PIND3)))){
 			while((uint8_t)1==Delay_ms(100,(PIND&(1<<PIND3)))){}
 			if(set_power_max==true){
 				set_power_max=false;
-				Increment_decrement_LED(DECREMENT);
 			}
 			else{	
-				target_delay+=DELAYCNTRLSOFTTRANSITION+OCR1A;
+				TRIACdelay+=(uint16_t)(DELAYCNTRL+OCR1A);
 				decrement_flag=true;
-				decrement_flag_LED=false;
-				Increment_decrement_LED(DECREMENT);
 			}
+			Increment_decrement_LED(DECREMENT);
+			decrement_flag_LED=false;
 		}
 		if(!(PINA&(1<<PINA1))){
 				SET_LED5;// set LED
