@@ -5,15 +5,19 @@
 #include <stdbool.h>
 
 #ifndef DELAYCNTRLSOFTTRANSITION
-	#define DELAYCNTRLSOFTTRANSITION 10
+	#define DELAYCNTRLSOFTTRANSITION 20
 #endif
 
 #ifndef DELAYCNTRL
-	#define DELAYCNTRL 1600
+	#define DELAYCNTRL 2000
 #endif
 
 #ifndef DELAYMIN
-	#define DELAYMIN 600
+	#define DELAYMIN 500
+#endif
+
+#ifndef DELAYMAX
+	#define DELAYMAX 6500
 #endif
 
 // reset LEDs macros
@@ -45,10 +49,10 @@
 	#define RESET_TMR1OUT0 PORTB &= ~(1 << PORTB4)
 #endif
 
-extern volatile bool increment_flag, decrement_flag, decrement_flag_LED, increment_flag_LED;
+extern volatile bool increment_flag, decrement_flag;
 extern volatile uint16_t delay;
 extern volatile bool set_power_max;
-extern volatile uint16_t TRIACdelay;
+extern uint16_t TRIACdelay;
 
 typedef enum{
 	INCREMENT,

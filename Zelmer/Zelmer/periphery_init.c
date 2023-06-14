@@ -32,9 +32,9 @@ void Output_Pins_Init(void){
 // init input PINs
 void Input_Pins_Init(void){
 	//pins for min/max buttons
-	DDRD &= ~(1 << DDD2); // PD2 as input for ext interrupt
+	DDRD &= ~(1 << DDD2); // PD2 as input 
 	PORTD |= 1 << PORTD2; // pull up
-	DDRD &= ~(1 << DDD3); // PD3 as input for ext interrupt
+	DDRD &= ~(1 << DDD3); // PD3 as input 
 	PORTD |= 1 << PORTD3; // pull up
 	//pins for filter sensors
 	DDRD &= ~(1 << DDD1); // PD1 as input 
@@ -49,7 +49,7 @@ void Input_Pins_Init(void){
 	// Configure ext interrupt
 	PCMSK2 |= 1<<PCINT11;
 	GIMSK |= 1<<PCIE2;
-	
+/*	
 	// Configure INT0 to trigger on falling edge
 	MCUCR |= (1 << ISC01);
 	MCUCR &= ~(1 << ISC00);
@@ -57,6 +57,7 @@ void Input_Pins_Init(void){
 	MCUCR |= (1 << ISC11);
 	MCUCR &= ~(1 << ISC10);
 	GIMSK |= (1<<INT0) | (1<<INT1);// enable interrupts
+	*/
 }
 
 // init timers

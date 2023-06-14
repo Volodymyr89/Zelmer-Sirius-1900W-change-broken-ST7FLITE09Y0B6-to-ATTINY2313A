@@ -9,22 +9,19 @@
 #endif
 
 #ifndef DELAYSOFTSTART
-	#define DELAYSOFTSTART 370
+	#define DELAYSOFTSTART 375
 #endif
 
 #ifndef DELAYMAXSOFTSTART
 	#define DELAYMAXSOFTSTART 8000
 #endif
 
-#ifndef DELAYMAX
-	#define DELAYMAX 7000
-#endif
 
 
-volatile bool increment_flag=false, decrement_flag=false, increment_flag_LED=false, decrement_flag_LED=false;
-volatile uint16_t TRIACdelay;
+volatile bool increment_flag=false, decrement_flag=false;
+uint16_t TRIACdelay;
 volatile bool SoftStart=false, set_power_max=false;
-volatile uint8_t LED=0;
+uint8_t LED=0;
 
 
 
@@ -35,20 +32,12 @@ volatile uint8_t LED=0;
 	SET_TMR1OUT0;
 }
 
-ISR(INT0_vect){
-	increment_flag_LED=true;
-}
-
-ISR(INT1_vect){
-	decrement_flag_LED=true;
-}
-
 ISR(PCINT2_vect){
 	if(SoftStart==true){
 		OCR1A = TRIACdelay;// set delay time;
 	}
 	else if (increment_flag==true){
-			if((OCR1A>DELAYMIN)&&(OCR1A>TRIACdelay)){
+			if(OCR1A>TRIACdelay){
 				OCR1A -=DELAYCNTRLSOFTTRANSITION;
 			}
 			else{
@@ -56,7 +45,7 @@ ISR(PCINT2_vect){
 			}
 	}
 	else if (decrement_flag==true){
-			 if((OCR1A<DELAYMAX)&&(OCR1A<TRIACdelay)){
+			 if(OCR1A<TRIACdelay){
 				OCR1A +=DELAYCNTRLSOFTTRANSITION;
 			}
 			else{
@@ -108,12 +97,11 @@ void Soft_Start_and_Run_to_Max(void){
 		}
 	set_power_max=true;
 	SoftStart=false;
-	TRIACdelay=0;
 }
 
 void Increment_decrement_LED(led_status_t led_status){
 	if(led_status == INCREMENT){
-		if(LED<4 && (TRIACdelay>=DELAYMIN)){
+		if(LED<4){
 			LED++;
 			switch(LED){
 				case 1:
@@ -132,7 +120,7 @@ void Increment_decrement_LED(led_status_t led_status){
 		}
 	}
 	else if (led_status == DECREMENT){
-		if(LED>=1 && TRIACdelay<=DELAYMAX){
+		if(LED>=1){
 			switch(LED){
 				case 1:
 				RESET_LED1;
