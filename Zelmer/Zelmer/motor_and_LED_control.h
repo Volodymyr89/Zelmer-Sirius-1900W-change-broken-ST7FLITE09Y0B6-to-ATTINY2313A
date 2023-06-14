@@ -49,6 +49,7 @@ extern volatile bool increment_flag, decrement_flag, decrement_flag_LED, increme
 extern volatile uint16_t delay;
 extern volatile bool set_power_max;
 extern volatile uint16_t TRIACdelay;
+
 typedef enum{
 	INCREMENT,
 	DECREMENT

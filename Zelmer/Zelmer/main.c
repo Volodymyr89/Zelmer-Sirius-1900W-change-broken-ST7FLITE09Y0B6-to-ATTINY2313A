@@ -32,13 +32,13 @@ int main(void)
     {
 		if((increment_flag_LED==true) && (decrement_flag_LED==false) && (!(PIND&(1<<PIND2)))){
 			while((uint8_t)1==Delay_ms(100,(PIND&(1<<PIND2)))){}
-				TRIACdelay=(uint16_t)(OCR1A-DELAYCNTRL);
-				if(TRIACdelay<DELAYMIN){
+				if(TRIACdelay<=DELAYMIN){
 					set_power_max=true;	
-				}
+				 }
 				else{
 					increment_flag=true;
 				}
+				TRIACdelay-=(uint16_t)(DELAYCNTRL);
 				increment_flag_LED=false;
 				Increment_decrement_LED(INCREMENT);
 			}
@@ -48,7 +48,7 @@ int main(void)
 				set_power_max=false;
 			}
 			else{	
-				TRIACdelay+=(uint16_t)(DELAYCNTRL+OCR1A);
+				TRIACdelay+=(uint16_t)(DELAYCNTRL);
 				decrement_flag=true;
 			}
 			Increment_decrement_LED(DECREMENT);

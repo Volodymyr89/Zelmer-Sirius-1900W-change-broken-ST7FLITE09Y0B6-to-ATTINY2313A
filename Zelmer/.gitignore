@@ -1,7 +1,7 @@
 # ignore all logs
-.log
+*.log
 # ignore all object
-.o
-.elf
-.lss
-.map
+*.o
+*.elf
+*.lss
+*.map
