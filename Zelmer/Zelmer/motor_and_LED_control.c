@@ -27,6 +27,7 @@ volatile bool SoftStart=false, set_power_max=false;
 volatile uint8_t LED=0;
 
 
+
  void Short_Pulse(void){	
 	volatile uint16_t delay=10;
 	RESET_TMR1OUT0;
