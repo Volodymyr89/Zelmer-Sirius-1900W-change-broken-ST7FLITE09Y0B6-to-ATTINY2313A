@@ -24,8 +24,6 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
                               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(mulsf3.o) (__fp_round)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
                               C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o (exit)
-c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
-                              motor_and_LED_control.o (__do_copy_data)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_clear_bss.o)
                               motor_and_LED_control.o (__do_clear_bss)
 
@@ -96,22 +94,6 @@ Discarded input sections
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
  .text.libgcc.fixed
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
- .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc.mul
-                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc.div
-                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc.prologue
-                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc.builtins
-                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc.fmul
-                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
- .text.libgcc.fixed
-                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_clear_bss.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_clear_bss.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_clear_bss.o)
@@ -256,7 +238,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x79e
+.text           0x00000000      0x79a
  *(.vectors)
  .vectors       0x00000000       0x2a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
                 0x00000000                __vector_default
@@ -297,10 +279,8 @@ END GROUP
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x00000032       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_copy_data.o)
-                0x00000032                __do_copy_data
- .init4         0x00000048       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_clear_bss.o)
-                0x00000048                __do_clear_bss
+ .init4         0x00000032       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_clear_bss.o)
+                0x00000032                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -311,115 +291,115 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x00000058        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
+ .init9         0x00000042        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
  *(.init9)
  *(.text)
- .text          0x0000005c        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
-                0x0000005c                __vector_12
-                0x0000005c                __bad_interrupt
-                0x0000005c                __vector_6
-                0x0000005c                __vector_3
-                0x0000005c                __vector_11
-                0x0000005c                __vector_13
-                0x0000005c                __vector_17
-                0x0000005c                __vector_19
-                0x0000005c                __vector_7
-                0x0000005c                __vector_5
-                0x0000005c                __vector_9
-                0x0000005c                __vector_15
-                0x0000005c                __vector_8
-                0x0000005c                __vector_14
-                0x0000005c                __vector_10
-                0x0000005c                __vector_16
-                0x0000005c                __vector_18
-                0x0000005e                . = ALIGN (0x2)
+ .text          0x00000046        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
+                0x00000046                __vector_12
+                0x00000046                __bad_interrupt
+                0x00000046                __vector_6
+                0x00000046                __vector_3
+                0x00000046                __vector_11
+                0x00000046                __vector_13
+                0x00000046                __vector_17
+                0x00000046                __vector_19
+                0x00000046                __vector_7
+                0x00000046                __vector_5
+                0x00000046                __vector_9
+                0x00000046                __vector_15
+                0x00000046                __vector_8
+                0x00000046                __vector_14
+                0x00000046                __vector_10
+                0x00000046                __vector_16
+                0x00000046                __vector_18
+                0x00000048                . = ALIGN (0x2)
  *(.text.*)
- .text.main     0x0000005e      0x102 main.o
-                0x0000005e                main
+ .text.main     0x00000048      0x110 main.o
+                0x00000048                main
  .text.Short_Pulse
-                0x00000160       0x3a motor_and_LED_control.o
-                0x00000160                Short_Pulse
+                0x00000158       0x3a motor_and_LED_control.o
+                0x00000158                Short_Pulse
  .text.__vector_1
-                0x0000019a       0x1e motor_and_LED_control.o
-                0x0000019a                __vector_1
+                0x00000192       0x1e motor_and_LED_control.o
+                0x00000192                __vector_1
  .text.__vector_2
-                0x000001b8       0x1e motor_and_LED_control.o
-                0x000001b8                __vector_2
+                0x000001b0       0x1e motor_and_LED_control.o
+                0x000001b0                __vector_2
  .text.__vector_20
-                0x000001d6       0xca motor_and_LED_control.o
-                0x000001d6                __vector_20
+                0x000001ce       0xc6 motor_and_LED_control.o
+                0x000001ce                __vector_20
  .text.__vector_4
-                0x000002a0       0x58 motor_and_LED_control.o
-                0x000002a0                __vector_4
+                0x00000294       0x58 motor_and_LED_control.o
+                0x00000294                __vector_4
  .text.Delay_ms
-                0x000002f8       0x32 motor_and_LED_control.o
-                0x000002f8                Delay_ms
+                0x000002ec       0x32 motor_and_LED_control.o
+                0x000002ec                Delay_ms
  .text.Increment_decrement_LED
-                0x0000032a       0xc0 motor_and_LED_control.o
-                0x0000032a                Increment_decrement_LED
+                0x0000031e       0xc0 motor_and_LED_control.o
+                0x0000031e                Increment_decrement_LED
  .text.Soft_Start_and_Run_to_Max
-                0x000003ea       0x62 motor_and_LED_control.o
-                0x000003ea                Soft_Start_and_Run_to_Max
+                0x000003de       0x6a motor_and_LED_control.o
+                0x000003de                Soft_Start_and_Run_to_Max
  .text.Output_Pins_Init
-                0x0000044c       0x6e periphery_init.o
-                0x0000044c                Output_Pins_Init
+                0x00000448       0x6e periphery_init.o
+                0x00000448                Output_Pins_Init
  .text.Input_Pins_Init
-                0x000004ba       0x6e periphery_init.o
-                0x000004ba                Input_Pins_Init
+                0x000004b6       0x6e periphery_init.o
+                0x000004b6                Input_Pins_Init
  .text.Timer0_Init
-                0x00000528        0xa periphery_init.o
-                0x00000528                Timer0_Init
+                0x00000524        0xa periphery_init.o
+                0x00000524                Timer0_Init
  .text.Timer1_Init
-                0x00000532        0xe periphery_init.o
-                0x00000532                Timer1_Init
+                0x0000052e        0xe periphery_init.o
+                0x0000052e                Timer1_Init
  .text.Timer1_Start
-                0x00000540        0x8 periphery_init.o
-                0x00000540                Timer1_Start
+                0x0000053c        0x8 periphery_init.o
+                0x0000053c                Timer1_Start
  .text.Timer1_Stop
-                0x00000548        0x8 periphery_init.o
-                0x00000548                Timer1_Stop
+                0x00000544        0x8 periphery_init.o
+                0x00000544                Timer1_Stop
  .text.avr-libc.fplib
-                0x00000550       0x58 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fixunssfsi.o)
-                0x00000550                __fixunssfsi
+                0x0000054c       0x58 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fixunssfsi.o)
+                0x0000054c                __fixunssfsi
  .text.avr-libc.fplib
-                0x000005a8       0x7a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(floatsisf.o)
-                0x000005a8                __floatunsisf
-                0x000005ac                __floatsisf
+                0x000005a4       0x7a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(floatsisf.o)
+                0x000005a4                __floatunsisf
+                0x000005a8                __floatsisf
  .text.avr-libc.fplib
-                0x00000622       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_split3.o)
-                0x00000622                __fp_split3
-                0x00000632                __fp_splitA
+                0x0000061e       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_split3.o)
+                0x0000061e                __fp_split3
+                0x0000062e                __fp_splitA
  .text.avr-libc.fplib
-                0x00000666        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_zero.o)
-                0x00000666                __fp_zero
-                0x00000668                __fp_szero
+                0x00000662        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_zero.o)
+                0x00000662                __fp_zero
+                0x00000664                __fp_szero
  .text.avr-libc.fplib
-                0x00000674        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(mulsf3.o)
-                0x00000674                __mulsf3
+                0x00000670        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(mulsf3.o)
+                0x00000670                __mulsf3
  .text.avr-libc.fplib
-                0x00000678       0xd2 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(mulsf3x.o)
-                0x0000068a                __mulsf3x
-                0x0000068e                __mulsf3_pse
+                0x00000674       0xd2 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(mulsf3x.o)
+                0x00000686                __mulsf3x
+                0x0000068a                __mulsf3_pse
  .text.avr-libc.fplib
-                0x0000074a        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_inf.o)
-                0x0000074a                __fp_inf
+                0x00000746        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_inf.o)
+                0x00000746                __fp_inf
  .text.avr-libc.fplib
-                0x00000756        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_nan.o)
-                0x00000756                __fp_nan
+                0x00000752        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_nan.o)
+                0x00000752                __fp_nan
  .text.avr-libc.fplib
-                0x0000075c        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_pscA.o)
-                0x0000075c                __fp_pscA
+                0x00000758        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_pscA.o)
+                0x00000758                __fp_pscA
  .text.avr-libc.fplib
-                0x0000076a        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_pscB.o)
-                0x0000076a                __fp_pscB
+                0x00000766        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_pscB.o)
+                0x00000766                __fp_pscB
  .text.avr-libc.fplib
-                0x00000778       0x22 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_round.o)
-                0x00000778                __fp_round
-                0x0000079a                . = ALIGN (0x2)
+                0x00000774       0x22 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr25/tiny-stack\libm.a(fp_round.o)
+                0x00000774                __fp_round
+                0x00000796                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000079a        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
-                0x0000079a                _exit
-                0x0000079a                exit
+ .fini9         0x00000796        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
+                0x00000796                _exit
+                0x00000796                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -438,61 +418,58 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000079a        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
+ .fini0         0x00000796        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr25/tiny-stack\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000079e                _etext = .
+                0x0000079a                _etext = .
 
-.data           0x00800060        0x2 load address 0x0000079e
-                0x00800060                PROVIDE (__data_start, .)
+.data           0x00800060        0x0 load address 0x0000079a
+                [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.target_delay
-                0x00800060        0x2 motor_and_LED_control.o
-                0x00800060                target_delay
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.r*)
-                0x00800062                . = ALIGN (0x2)
-                0x00800062                _edata = .
-                0x00800062                PROVIDE (__data_end, .)
+                0x00800060                . = ALIGN (0x2)
+                0x00800060                _edata = .
+                [!provide]                PROVIDE (__data_end, .)
 
-.bss            0x00800062        0x9
-                0x00800062                PROVIDE (__bss_start, .)
+.bss            0x00800060        0x9
+                0x00800060                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.LED       0x00800062        0x1 motor_and_LED_control.o
-                0x00800062                LED
+ .bss.LED       0x00800060        0x1 motor_and_LED_control.o
+                0x00800060                LED
  .bss.set_power_max
-                0x00800063        0x1 motor_and_LED_control.o
-                0x00800063                set_power_max
+                0x00800061        0x1 motor_and_LED_control.o
+                0x00800061                set_power_max
  .bss.SoftStart
-                0x00800064        0x1 motor_and_LED_control.o
-                0x00800064                SoftStart
+                0x00800062        0x1 motor_and_LED_control.o
+                0x00800062                SoftStart
  .bss.decrement_flag_LED
-                0x00800065        0x1 motor_and_LED_control.o
-                0x00800065                decrement_flag_LED
+                0x00800063        0x1 motor_and_LED_control.o
+                0x00800063                decrement_flag_LED
  .bss.increment_flag_LED
-                0x00800066        0x1 motor_and_LED_control.o
-                0x00800066                increment_flag_LED
+                0x00800064        0x1 motor_and_LED_control.o
+                0x00800064                increment_flag_LED
  .bss.decrement_flag
-                0x00800067        0x1 motor_and_LED_control.o
-                0x00800067                decrement_flag
+                0x00800065        0x1 motor_and_LED_control.o
+                0x00800065                decrement_flag
  .bss.increment_flag
-                0x00800068        0x1 motor_and_LED_control.o
-                0x00800068                increment_flag
+                0x00800066        0x1 motor_and_LED_control.o
+                0x00800066                increment_flag
  *(COMMON)
- COMMON         0x00800069        0x2 motor_and_LED_control.o
-                0x00800069                TRIACdelay
-                0x0080006b                PROVIDE (__bss_end, .)
-                0x0000079e                __data_load_start = LOADADDR (.data)
-                0x000007a0                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800067        0x2 motor_and_LED_control.o
+                0x00800067                TRIACdelay
+                0x00800069                PROVIDE (__bss_end, .)
+                0x0000079a                __data_load_start = LOADADDR (.data)
+                0x0000079a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080006b        0x0
+.noinit         0x00800069        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080006b                _end = .
+                0x00800069                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -571,12 +548,12 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xa1f
+.debug_info     0x00000000      0xa20
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x456 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
- .debug_info    0x00000456      0x1e9 main.o
- .debug_info    0x0000063f      0x2ef motor_and_LED_control.o
- .debug_info    0x0000092e       0xf1 periphery_init.o
+ .debug_info    0x00000456      0x1fc main.o
+ .debug_info    0x00000652      0x2dd motor_and_LED_control.o
+ .debug_info    0x0000092f       0xf1 periphery_init.o
 
 .debug_abbrev   0x00000000      0x692
  *(.debug_abbrev)
@@ -585,12 +562,12 @@ END GROUP
  .debug_abbrev  0x000004e4      0x15d motor_and_LED_control.o
  .debug_abbrev  0x00000641       0x51 periphery_init.o
 
-.debug_line     0x00000000      0x7f1
+.debug_line     0x00000000      0x809
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x10c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
- .debug_line    0x0000010c      0x1ca main.o
- .debug_line    0x000002d6      0x329 motor_and_LED_control.o
- .debug_line    0x000005ff      0x1f2 periphery_init.o
+ .debug_line    0x0000010c      0x1dc main.o
+ .debug_line    0x000002e8      0x32f motor_and_LED_control.o
+ .debug_line    0x00000617      0x1f2 periphery_init.o
 
 .debug_frame    0x00000000      0x1f4
  *(.debug_frame)
@@ -598,14 +575,14 @@ END GROUP
  .debug_frame   0x00000024      0x15c motor_and_LED_control.o
  .debug_frame   0x00000180       0x74 periphery_init.o
 
-.debug_str      0x00000000      0x45f
+.debug_str      0x00000000      0x452
  *(.debug_str)
  .debug_str     0x00000000      0x17b C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.10.348/gcc/dev/attiny2313a/avr25/tiny-stack/crtattiny2313a.o
- .debug_str     0x0000017b      0x212 main.o
-                                0x24b (size before relaxing)
- .debug_str     0x0000038d       0xbc motor_and_LED_control.o
-                                0x2be (size before relaxing)
- .debug_str     0x00000449       0x16 periphery_init.o
+ .debug_str     0x0000017b      0x210 main.o
+                                0x249 (size before relaxing)
+ .debug_str     0x0000038b       0xb1 motor_and_LED_control.o
+                                0x2b1 (size before relaxing)
+ .debug_str     0x0000043c       0x16 periphery_init.o
                                 0x1a7 (size before relaxing)
 
 .debug_loc      0x00000000      0x3b1
