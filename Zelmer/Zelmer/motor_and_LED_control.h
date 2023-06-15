@@ -8,8 +8,21 @@
 	#define DELAYCNTRLSOFTTRANSITION 20
 #endif
 
+// set CNT0MAX
+#ifndef CNT0MAX
+	#define CNT0MAX 255
+#endif
+
+#ifndef DELAYSOFTSTART
+	#define DELAYSOFTSTART 400
+#endif
+
+#ifndef DELAYMAXSOFTSTART
+	#define DELAYMAXSOFTSTART 8000
+#endif
+
 #ifndef DELAYCNTRL
-	#define DELAYCNTRL 2000
+	#define DELAYCNTRL 1625
 #endif
 
 #ifndef DELAYMIN
@@ -67,5 +80,7 @@ void Increment_Duty_Cycle(void);
 void Decrement_Duty_Cycle(uint8_t LED);
 void Timer1_Start(void);
 void Timer1_Stop(void);
+void Increment_Power_and_LEDs(void);
+void Decrement_Power_and_LEDs(void);
 
 #endif

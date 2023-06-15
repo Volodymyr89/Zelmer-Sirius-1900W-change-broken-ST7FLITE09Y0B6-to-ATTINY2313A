@@ -3,20 +3,6 @@
 #include <avr/interrupt.h>
 #include "motor_and_LED_control.h"
 
-// set CNT0MAX 
-#ifndef CNT0MAX
-	#define CNT0MAX 255
-#endif
-
-#ifndef DELAYSOFTSTART
-	#define DELAYSOFTSTART 375
-#endif
-
-#ifndef DELAYMAXSOFTSTART
-	#define DELAYMAXSOFTSTART 8000
-#endif
-
-
 
 volatile bool increment_flag=false, decrement_flag=false;
 uint16_t TRIACdelay;
@@ -52,6 +38,12 @@ ISR(PCINT2_vect){
 				decrement_flag=false;
 			}
 	 }
+	 if(OCR1A<DELAYMIN){
+		 set_power_max=true;
+	 }
+	 else{
+		 set_power_max=false;
+	 }
 	Timer1_Start();
 }
 
@@ -86,7 +78,7 @@ void Soft_Start_and_Run_to_Max(void){
 	uint8_t cnt=0;
 	SoftStart=true;
 	SET_LED0;// turn ON LED0
-	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>DELAYMIN; TRIACdelay-=DELAYSOFTSTART){
+	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>0; TRIACdelay-=DELAYSOFTSTART){
 			if((uint8_t)0 == Delay_ms(100, 0)){
 				cnt++;
 				if(cnt>=5){
@@ -95,7 +87,6 @@ void Soft_Start_and_Run_to_Max(void){
 				}
 			}
 		}
-	set_power_max=true;
 	SoftStart=false;
 }
 
@@ -140,5 +131,20 @@ void Increment_decrement_LED(led_status_t led_status){
 	}
 }
 
+void Increment_Power_and_LEDs(void){
+	if (TRIACdelay>DELAYMIN){
+		TRIACdelay-=(uint16_t)(DELAYCNTRL);
+		increment_flag=true;
+	}
+	Increment_decrement_LED(INCREMENT);
+}
+
+void Decrement_Power_and_LEDs(void){
+	if (TRIACdelay<DELAYMAX){
+		TRIACdelay+=(uint16_t)(DELAYCNTRL);
+		decrement_flag=true;
+	}
+	Increment_decrement_LED(DECREMENT);
+}
 
 
