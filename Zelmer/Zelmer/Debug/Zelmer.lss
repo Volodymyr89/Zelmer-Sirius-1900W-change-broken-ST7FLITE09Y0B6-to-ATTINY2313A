@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000c0  00000000  00000000  000007d8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000009c3  00000000  00000000  00000898  2**0
+  6 .debug_info   000009b1  00000000  00000000  00000898  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 0000065b  00000000  00000000  0000125b  2**0
+  7 .debug_abbrev 0000065b  00000000  00000000  00001249  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000007a1  00000000  00000000  000018b6  2**0
+  8 .debug_line   000007a1  00000000  00000000  000018a4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001d4  00000000  00000000  00002058  2**2
+  9 .debug_frame  000001d4  00000000  00000000  00002048  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004bf  00000000  00000000  0000222c  2**0
+ 10 .debug_str    000004ca  00000000  00000000  0000221c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000339  00000000  00000000  000026eb  2**0
+ 11 .debug_loc    00000339  00000000  00000000  000026e6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000090  00000000  00000000  00002a24  2**0
+ 12 .debug_ranges 00000090  00000000  00000000  00002a1f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -82,7 +82,7 @@ Disassembly of section .text:
 
 00000048 <main>:
 
-bool button2_latch=false, button3_latch=false, set_power_max_flag=false;
+bool button2_latch=false, button3_latch=false;
 
 int main(void)
 {	
@@ -142,12 +142,12 @@ int main(void)
 		else if((!(PIND&(1<<PIND3))) && (!button3_latch)){
   8e:	83 99       	sbic	0x10, 3	; 16
   90:	0e c0       	rjmp	.+28     	; 0xae <__DATA_REGION_LENGTH__+0x2e>
-  92:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+  92:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <_edata>
   96:	81 11       	cpse	r24, r1
   98:	0a c0       	rjmp	.+20     	; 0xae <__DATA_REGION_LENGTH__+0x2e>
 				button3_latch=true;
   9a:	81 e0       	ldi	r24, 0x01	; 1
-  9c:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__DATA_REGION_ORIGIN__>
+  9c:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <_edata>
 				while((uint8_t)1==Delay_ms(200,(PIND&(1<<PIND3)))){}
   a0:	60 b3       	in	r22, 0x10	; 16
   a2:	68 70       	andi	r22, 0x08	; 8
@@ -166,7 +166,7 @@ int main(void)
 		if(PIND&(1<<PIND3)){
   b4:	83 99       	sbic	0x10, 3	; 16
 			button3_latch=false;
-  b6:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <__DATA_REGION_ORIGIN__>
+  b6:	10 92 60 00 	sts	0x0060, r1	; 0x800060 <_edata>
 		}
 		if(!(PINA&(1<<PINA1))){
   ba:	c9 99       	sbic	0x19, 1	; 25
@@ -215,27 +215,18 @@ int main(void)
   f0:	bd cf       	rjmp	.-134    	; 0x6c <main+0x24>
 
 000000f2 <Short_Pulse>:
-volatile bool SoftStart=false, set_power_max=false;
-uint8_t LED=0;
-
-
-
- void Short_Pulse(void){	
   f2:	cf 93       	push	r28
   f4:	df 93       	push	r29
   f6:	00 d0       	rcall	.+0      	; 0xf8 <Short_Pulse+0x6>
   f8:	cd b7       	in	r28, 0x3d	; 61
   fa:	dd 27       	eor	r29, r29
-	volatile uint16_t delay=10;
   fc:	8a e0       	ldi	r24, 0x0A	; 10
   fe:	90 e0       	ldi	r25, 0x00	; 0
  100:	9a 83       	std	Y+2, r25	; 0x02
  102:	89 83       	std	Y+1, r24	; 0x01
-	RESET_TMR1OUT0;
  104:	88 b3       	in	r24, 0x18	; 24
  106:	8f 7e       	andi	r24, 0xEF	; 239
  108:	88 bb       	out	0x18, r24	; 24
-	while(delay--){}
  10a:	89 81       	ldd	r24, Y+1	; 0x01
  10c:	9a 81       	ldd	r25, Y+2	; 0x02
  10e:	9c 01       	movw	r18, r24
@@ -245,11 +236,9 @@ uint8_t LED=0;
  116:	29 83       	std	Y+1, r18	; 0x01
  118:	89 2b       	or	r24, r25
  11a:	b9 f7       	brne	.-18     	; 0x10a <Short_Pulse+0x18>
-	SET_TMR1OUT0;
  11c:	88 b3       	in	r24, 0x18	; 24
  11e:	80 61       	ori	r24, 0x10	; 16
  120:	88 bb       	out	0x18, r24	; 24
-}
  122:	ce 5f       	subi	r28, 0xFE	; 254
  124:	cd bf       	out	0x3d, r28	; 61
  126:	df 91       	pop	r29
@@ -257,8 +246,6 @@ uint8_t LED=0;
  12a:	08 95       	ret
 
 0000012c <__vector_20>:
-
-ISR(PCINT2_vect){
  12c:	1f 92       	push	r1
  12e:	0f 92       	push	r0
  130:	0f b6       	in	r0, 0x3f	; 63
@@ -276,22 +263,17 @@ ISR(PCINT2_vect){
  148:	bf 93       	push	r27
  14a:	ef 93       	push	r30
  14c:	ff 93       	push	r31
-	if(SoftStart==true){
  14e:	80 91 64 00 	lds	r24, 0x0064	; 0x800064 <SoftStart>
  152:	88 23       	and	r24, r24
  154:	39 f0       	breq	.+14     	; 0x164 <__vector_20+0x38>
-		OCR1A = TRIACdelay;// set delay time;
  156:	80 91 67 00 	lds	r24, 0x0067	; 0x800067 <TRIACdelay>
  15a:	90 91 68 00 	lds	r25, 0x0068	; 0x800068 <TRIACdelay+0x1>
  15e:	9b bd       	out	0x2b, r25	; 43
  160:	8a bd       	out	0x2a, r24	; 42
  162:	2b c0       	rjmp	.+86     	; 0x1ba <__vector_20+0x8e>
-	}
-	else if (increment_flag==true){
  164:	80 91 66 00 	lds	r24, 0x0066	; 0x800066 <increment_flag>
  168:	88 23       	and	r24, r24
  16a:	91 f0       	breq	.+36     	; 0x190 <__vector_20+0x64>
-			if(OCR1A>TRIACdelay){
  16c:	2a b5       	in	r18, 0x2a	; 42
  16e:	3b b5       	in	r19, 0x2b	; 43
  170:	80 91 67 00 	lds	r24, 0x0067	; 0x800067 <TRIACdelay>
@@ -299,25 +281,17 @@ ISR(PCINT2_vect){
  178:	82 17       	cp	r24, r18
  17a:	93 07       	cpc	r25, r19
  17c:	30 f4       	brcc	.+12     	; 0x18a <__vector_20+0x5e>
-				OCR1A -=DELAYCNTRLSOFTTRANSITION;
  17e:	8a b5       	in	r24, 0x2a	; 42
  180:	9b b5       	in	r25, 0x2b	; 43
  182:	44 97       	sbiw	r24, 0x14	; 20
  184:	9b bd       	out	0x2b, r25	; 43
  186:	8a bd       	out	0x2a, r24	; 42
  188:	18 c0       	rjmp	.+48     	; 0x1ba <__vector_20+0x8e>
-			}
-			else{
-				increment_flag=false;
  18a:	10 92 66 00 	sts	0x0066, r1	; 0x800066 <increment_flag>
  18e:	15 c0       	rjmp	.+42     	; 0x1ba <__vector_20+0x8e>
-			}
-	}
-	else if (decrement_flag==true){
  190:	80 91 65 00 	lds	r24, 0x0065	; 0x800065 <decrement_flag>
  194:	88 23       	and	r24, r24
  196:	89 f0       	breq	.+34     	; 0x1ba <__vector_20+0x8e>
-			 if(OCR1A<TRIACdelay){
  198:	2a b5       	in	r18, 0x2a	; 42
  19a:	3b b5       	in	r19, 0x2b	; 43
  19c:	80 91 67 00 	lds	r24, 0x0067	; 0x800067 <TRIACdelay>
@@ -325,37 +299,23 @@ ISR(PCINT2_vect){
  1a4:	28 17       	cp	r18, r24
  1a6:	39 07       	cpc	r19, r25
  1a8:	30 f4       	brcc	.+12     	; 0x1b6 <__vector_20+0x8a>
-				OCR1A +=DELAYCNTRLSOFTTRANSITION;
  1aa:	8a b5       	in	r24, 0x2a	; 42
  1ac:	9b b5       	in	r25, 0x2b	; 43
  1ae:	44 96       	adiw	r24, 0x14	; 20
  1b0:	9b bd       	out	0x2b, r25	; 43
  1b2:	8a bd       	out	0x2a, r24	; 42
  1b4:	02 c0       	rjmp	.+4      	; 0x1ba <__vector_20+0x8e>
-			}
-			else{
-				decrement_flag=false;
  1b6:	10 92 65 00 	sts	0x0065, r1	; 0x800065 <decrement_flag>
-			}
-	 }
-	 if(OCR1A<DELAYMIN){
  1ba:	8a b5       	in	r24, 0x2a	; 42
  1bc:	9b b5       	in	r25, 0x2b	; 43
  1be:	84 3f       	cpi	r24, 0xF4	; 244
  1c0:	91 40       	sbci	r25, 0x01	; 1
  1c2:	20 f4       	brcc	.+8      	; 0x1cc <__vector_20+0xa0>
-		 set_power_max=true;
  1c4:	81 e0       	ldi	r24, 0x01	; 1
  1c6:	80 93 63 00 	sts	0x0063, r24	; 0x800063 <set_power_max>
  1ca:	02 c0       	rjmp	.+4      	; 0x1d0 <__vector_20+0xa4>
-	 }
-	 else{
-		 set_power_max=false;
  1cc:	10 92 63 00 	sts	0x0063, r1	; 0x800063 <set_power_max>
-	 }
-	Timer1_Start();
  1d0:	61 d1       	rcall	.+706    	; 0x494 <Timer1_Start>
-}
  1d2:	ff 91       	pop	r31
  1d4:	ef 91       	pop	r30
  1d6:	bf 91       	pop	r27
@@ -375,9 +335,6 @@ ISR(PCINT2_vect){
  1f2:	18 95       	reti
 
 000001f4 <__vector_4>:
-
-ISR(TIMER1_COMPA_vect)
-{
  1f4:	1f 92       	push	r1
  1f6:	0f 92       	push	r0
  1f8:	0f b6       	in	r0, 0x3f	; 63
@@ -395,23 +352,15 @@ ISR(TIMER1_COMPA_vect)
  210:	bf 93       	push	r27
  212:	ef 93       	push	r30
  214:	ff 93       	push	r31
-	Timer1_Stop();
  216:	42 d1       	rcall	.+644    	; 0x49c <Timer1_Stop>
-	if(set_power_max==true){
  218:	80 91 63 00 	lds	r24, 0x0063	; 0x800063 <set_power_max>
  21c:	88 23       	and	r24, r24
  21e:	21 f0       	breq	.+8      	; 0x228 <__vector_4+0x34>
-		RESET_TMR1OUT0; // set max power
  220:	88 b3       	in	r24, 0x18	; 24
  222:	8f 7e       	andi	r24, 0xEF	; 239
  224:	88 bb       	out	0x18, r24	; 24
  226:	01 c0       	rjmp	.+2      	; 0x22a <__vector_4+0x36>
-	}
-	else{
-		Short_Pulse();
  228:	64 df       	rcall	.-312    	; 0xf2 <Short_Pulse>
-	}
-}
  22a:	ff 91       	pop	r31
  22c:	ef 91       	pop	r30
  22e:	bf 91       	pop	r27
@@ -431,13 +380,8 @@ ISR(TIMER1_COMPA_vect)
  24a:	18 95       	reti
 
 0000024c <Delay_ms>:
-
-uint8_t Delay_ms(uint8_t delay, uint8_t reset){
-	uint8_t return_status = 1;
-	if(delay<=250){
  24c:	8b 3f       	cpi	r24, 0xFB	; 251
  24e:	a8 f4       	brcc	.+42     	; 0x27a <Delay_ms+0x2e>
-		uint8_t counterdata= (uint8_t)(delay*0.976);
  250:	68 2f       	mov	r22, r24
  252:	70 e0       	ldi	r23, 0x00	; 0
  254:	80 e0       	ldi	r24, 0x00	; 0
@@ -449,56 +393,28 @@ uint8_t Delay_ms(uint8_t delay, uint8_t reset){
  260:	5f e3       	ldi	r21, 0x3F	; 63
  262:	b2 d1       	rcall	.+868    	; 0x5c8 <__mulsf3>
  264:	1f d1       	rcall	.+574    	; 0x4a4 <__fixunssfsi>
-		TCNT0 = (255-counterdata);
  266:	60 95       	com	r22
  268:	62 bf       	out	0x32, r22	; 50
-		while(!(TIFR&(1<<TOV0))){
  26a:	08 b6       	in	r0, 0x38	; 56
  26c:	01 fe       	sbrs	r0, 1
  26e:	fd cf       	rjmp	.-6      	; 0x26a <Delay_ms+0x1e>
-				if(reset==(uint8_t)1)
-					return_status= 1;
-				}// wait until counter reaches 255
-		TIFR |= 1<<TOV0;
  270:	88 b7       	in	r24, 0x38	; 56
  272:	82 60       	ori	r24, 0x02	; 2
  274:	88 bf       	out	0x38, r24	; 56
-		return_status= 0;
  276:	80 e0       	ldi	r24, 0x00	; 0
  278:	08 95       	ret
-		Short_Pulse();
-	}
-}
-
-uint8_t Delay_ms(uint8_t delay, uint8_t reset){
-	uint8_t return_status = 1;
  27a:	81 e0       	ldi	r24, 0x01	; 1
-				}// wait until counter reaches 255
-		TIFR |= 1<<TOV0;
-		return_status= 0;
-	}
-	return return_status;
-}
  27c:	08 95       	ret
 
 0000027e <Increment_decrement_LED>:
-		}
-	SoftStart=false;
-}
-
-void Increment_decrement_LED(led_status_t led_status){
-	if(led_status == INCREMENT){
  27e:	81 11       	cpse	r24, r1
  280:	23 c0       	rjmp	.+70     	; 0x2c8 <Increment_decrement_LED+0x4a>
-		if(LED<4){
  282:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <LED>
  286:	84 30       	cpi	r24, 0x04	; 4
  288:	08 f0       	brcs	.+2      	; 0x28c <Increment_decrement_LED+0xe>
  28a:	43 c0       	rjmp	.+134    	; 0x312 <Increment_decrement_LED+0x94>
-			LED++;
  28c:	8f 5f       	subi	r24, 0xFF	; 255
  28e:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <LED>
-			switch(LED){
  292:	82 30       	cpi	r24, 0x02	; 2
  294:	69 f0       	breq	.+26     	; 0x2b0 <Increment_decrement_LED+0x32>
  296:	18 f4       	brcc	.+6      	; 0x29e <Increment_decrement_LED+0x20>
@@ -510,45 +426,27 @@ void Increment_decrement_LED(led_status_t led_status){
  2a2:	84 30       	cpi	r24, 0x04	; 4
  2a4:	69 f0       	breq	.+26     	; 0x2c0 <Increment_decrement_LED+0x42>
  2a6:	08 95       	ret
-				case 1:
-				SET_LED1;
  2a8:	88 b3       	in	r24, 0x18	; 24
  2aa:	87 7f       	andi	r24, 0xF7	; 247
  2ac:	88 bb       	out	0x18, r24	; 24
-				break;
  2ae:	08 95       	ret
-				case 2:
-				SET_LED2;
  2b0:	88 b3       	in	r24, 0x18	; 24
  2b2:	8b 7f       	andi	r24, 0xFB	; 251
  2b4:	88 bb       	out	0x18, r24	; 24
-				break;
  2b6:	08 95       	ret
-				case 3:
-				SET_LED3;
  2b8:	88 b3       	in	r24, 0x18	; 24
  2ba:	8d 7f       	andi	r24, 0xFD	; 253
  2bc:	88 bb       	out	0x18, r24	; 24
-				break;
  2be:	08 95       	ret
-				case 4:
-				SET_LED4;
  2c0:	88 b3       	in	r24, 0x18	; 24
  2c2:	8e 7f       	andi	r24, 0xFE	; 254
  2c4:	88 bb       	out	0x18, r24	; 24
-				break;
  2c6:	08 95       	ret
-			}
-		}
-	}
-	else if (led_status == DECREMENT){
  2c8:	81 30       	cpi	r24, 0x01	; 1
  2ca:	19 f5       	brne	.+70     	; 0x312 <Increment_decrement_LED+0x94>
-		if(LED>=1){
  2cc:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <LED>
  2d0:	88 23       	and	r24, r24
  2d2:	f9 f0       	breq	.+62     	; 0x312 <Increment_decrement_LED+0x94>
-			switch(LED){
  2d4:	82 30       	cpi	r24, 0x02	; 2
  2d6:	69 f0       	breq	.+26     	; 0x2f2 <Increment_decrement_LED+0x74>
  2d8:	18 f4       	brcc	.+6      	; 0x2e0 <Increment_decrement_LED+0x62>
@@ -560,93 +458,49 @@ void Increment_decrement_LED(led_status_t led_status){
  2e4:	84 30       	cpi	r24, 0x04	; 4
  2e6:	69 f0       	breq	.+26     	; 0x302 <Increment_decrement_LED+0x84>
  2e8:	0f c0       	rjmp	.+30     	; 0x308 <Increment_decrement_LED+0x8a>
-				case 1:
-				RESET_LED1;
  2ea:	88 b3       	in	r24, 0x18	; 24
  2ec:	88 60       	ori	r24, 0x08	; 8
  2ee:	88 bb       	out	0x18, r24	; 24
-				break;
  2f0:	0b c0       	rjmp	.+22     	; 0x308 <Increment_decrement_LED+0x8a>
-				case 2:
-				RESET_LED2;
  2f2:	88 b3       	in	r24, 0x18	; 24
  2f4:	84 60       	ori	r24, 0x04	; 4
  2f6:	88 bb       	out	0x18, r24	; 24
-				break;
  2f8:	07 c0       	rjmp	.+14     	; 0x308 <Increment_decrement_LED+0x8a>
-				case 3:
-				RESET_LED3;
  2fa:	88 b3       	in	r24, 0x18	; 24
  2fc:	82 60       	ori	r24, 0x02	; 2
  2fe:	88 bb       	out	0x18, r24	; 24
-				break;
  300:	03 c0       	rjmp	.+6      	; 0x308 <Increment_decrement_LED+0x8a>
-				case 4:
-				RESET_LED4;
  302:	88 b3       	in	r24, 0x18	; 24
  304:	81 60       	ori	r24, 0x01	; 1
  306:	88 bb       	out	0x18, r24	; 24
-				break;
-			}
-			LED--;
  308:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <LED>
  30c:	81 50       	subi	r24, 0x01	; 1
  30e:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <LED>
  312:	08 95       	ret
 
 00000314 <Soft_Start_and_Run_to_Max>:
-	}
-	return return_status;
-}
-
-
-void Soft_Start_and_Run_to_Max(void){
  314:	cf 93       	push	r28
-	uint8_t cnt=0;
-	SoftStart=true;
  316:	81 e0       	ldi	r24, 0x01	; 1
  318:	80 93 64 00 	sts	0x0064, r24	; 0x800064 <SoftStart>
-	SET_LED0;// turn ON LED0
  31c:	82 b3       	in	r24, 0x12	; 18
  31e:	8f 7d       	andi	r24, 0xDF	; 223
  320:	82 bb       	out	0x12, r24	; 18
-	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>0; TRIACdelay-=DELAYSOFTSTART){
  322:	80 e4       	ldi	r24, 0x40	; 64
  324:	9f e1       	ldi	r25, 0x1F	; 31
  326:	90 93 68 00 	sts	0x0068, r25	; 0x800068 <TRIACdelay+0x1>
  32a:	80 93 67 00 	sts	0x0067, r24	; 0x800067 <TRIACdelay>
-	return return_status;
-}
-
-
-void Soft_Start_and_Run_to_Max(void){
-	uint8_t cnt=0;
  32e:	c0 e0       	ldi	r28, 0x00	; 0
-	SoftStart=true;
-	SET_LED0;// turn ON LED0
-	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>0; TRIACdelay-=DELAYSOFTSTART){
  330:	14 c0       	rjmp	.+40     	; 0x35a <Soft_Start_and_Run_to_Max+0x46>
-			if((uint8_t)0 == Delay_ms(100, 0)){
  332:	60 e0       	ldi	r22, 0x00	; 0
  334:	84 e6       	ldi	r24, 0x64	; 100
  336:	8a df       	rcall	.-236    	; 0x24c <Delay_ms>
  338:	81 11       	cpse	r24, r1
  33a:	05 c0       	rjmp	.+10     	; 0x346 <Soft_Start_and_Run_to_Max+0x32>
-				cnt++;
  33c:	cf 5f       	subi	r28, 0xFF	; 255
-				if(cnt>=5){
  33e:	c5 30       	cpi	r28, 0x05	; 5
  340:	10 f0       	brcs	.+4      	; 0x346 <Soft_Start_and_Run_to_Max+0x32>
-					Increment_decrement_LED(INCREMENT);
  342:	9d df       	rcall	.-198    	; 0x27e <Increment_decrement_LED>
-					cnt=0;
  344:	c0 e0       	ldi	r28, 0x00	; 0
-
-void Soft_Start_and_Run_to_Max(void){
-	uint8_t cnt=0;
-	SoftStart=true;
-	SET_LED0;// turn ON LED0
-	for(TRIACdelay=DELAYMAXSOFTSTART; TRIACdelay>0; TRIACdelay-=DELAYSOFTSTART){
  346:	80 91 67 00 	lds	r24, 0x0067	; 0x800067 <TRIACdelay>
  34a:	90 91 68 00 	lds	r25, 0x0068	; 0x800068 <TRIACdelay+0x1>
  34e:	80 59       	subi	r24, 0x90	; 144
@@ -657,260 +511,166 @@ void Soft_Start_and_Run_to_Max(void){
  35e:	90 91 68 00 	lds	r25, 0x0068	; 0x800068 <TRIACdelay+0x1>
  362:	89 2b       	or	r24, r25
  364:	31 f7       	brne	.-52     	; 0x332 <Soft_Start_and_Run_to_Max+0x1e>
-					Increment_decrement_LED(INCREMENT);
-					cnt=0;
-				}
-			}
-		}
-	SoftStart=false;
  366:	10 92 64 00 	sts	0x0064, r1	; 0x800064 <SoftStart>
-}
  36a:	cf 91       	pop	r28
  36c:	08 95       	ret
 
 0000036e <Increment_Power_and_LEDs>:
-		}	
-	}
-}
-
-void Increment_Power_and_LEDs(void){
-	if (TRIACdelay>DELAYMIN){
  36e:	80 91 67 00 	lds	r24, 0x0067	; 0x800067 <TRIACdelay>
  372:	90 91 68 00 	lds	r25, 0x0068	; 0x800068 <TRIACdelay+0x1>
  376:	85 3f       	cpi	r24, 0xF5	; 245
  378:	21 e0       	ldi	r18, 0x01	; 1
  37a:	92 07       	cpc	r25, r18
  37c:	48 f0       	brcs	.+18     	; 0x390 <Increment_Power_and_LEDs+0x22>
-		TRIACdelay-=(uint16_t)(DELAYCNTRL);
  37e:	89 55       	subi	r24, 0x59	; 89
  380:	96 40       	sbci	r25, 0x06	; 6
  382:	90 93 68 00 	sts	0x0068, r25	; 0x800068 <TRIACdelay+0x1>
  386:	80 93 67 00 	sts	0x0067, r24	; 0x800067 <TRIACdelay>
-		increment_flag=true;
  38a:	81 e0       	ldi	r24, 0x01	; 1
  38c:	80 93 66 00 	sts	0x0066, r24	; 0x800066 <increment_flag>
-	}
-	Increment_decrement_LED(INCREMENT);
  390:	80 e0       	ldi	r24, 0x00	; 0
  392:	75 df       	rcall	.-278    	; 0x27e <Increment_decrement_LED>
  394:	08 95       	ret
 
 00000396 <Decrement_Power_and_LEDs>:
-}
-
-void Decrement_Power_and_LEDs(void){
-	if (TRIACdelay<DELAYMAX){
  396:	80 91 67 00 	lds	r24, 0x0067	; 0x800067 <TRIACdelay>
  39a:	90 91 68 00 	lds	r25, 0x0068	; 0x800068 <TRIACdelay+0x1>
  39e:	84 36       	cpi	r24, 0x64	; 100
  3a0:	29 e1       	ldi	r18, 0x19	; 25
  3a2:	92 07       	cpc	r25, r18
  3a4:	48 f4       	brcc	.+18     	; 0x3b8 <Decrement_Power_and_LEDs+0x22>
-		TRIACdelay+=(uint16_t)(DELAYCNTRL);
  3a6:	87 5a       	subi	r24, 0xA7	; 167
  3a8:	99 4f       	sbci	r25, 0xF9	; 249
  3aa:	90 93 68 00 	sts	0x0068, r25	; 0x800068 <TRIACdelay+0x1>
  3ae:	80 93 67 00 	sts	0x0067, r24	; 0x800067 <TRIACdelay>
-		decrement_flag=true;
  3b2:	81 e0       	ldi	r24, 0x01	; 1
  3b4:	80 93 65 00 	sts	0x0065, r24	; 0x800065 <decrement_flag>
-	}
-	Increment_decrement_LED(DECREMENT);
  3b8:	81 e0       	ldi	r24, 0x01	; 1
  3ba:	61 df       	rcall	.-318    	; 0x27e <Increment_decrement_LED>
  3bc:	08 95       	ret
 
 000003be <Output_Pins_Init>:
-
-
-// init output PINs
-void Output_Pins_Init(void){
-// PWM output
-	 DDRB |= (1 << DDB4); // as output for TMR1 PWM
  3be:	87 b3       	in	r24, 0x17	; 23
  3c0:	80 61       	ori	r24, 0x10	; 16
  3c2:	87 bb       	out	0x17, r24	; 23
-	 SET_TMR1OUT0;// set to zero
  3c4:	88 b3       	in	r24, 0x18	; 24
  3c6:	80 61       	ori	r24, 0x10	; 16
  3c8:	88 bb       	out	0x18, r24	; 24
-// set LEDs indicating power
-	DDRD |= (1 << DDD5); // LED0
  3ca:	81 b3       	in	r24, 0x11	; 17
  3cc:	80 62       	ori	r24, 0x20	; 32
  3ce:	81 bb       	out	0x11, r24	; 17
-	  RESET_LED4;// set to zero
  3d0:	88 b3       	in	r24, 0x18	; 24
  3d2:	81 60       	ori	r24, 0x01	; 1
  3d4:	88 bb       	out	0x18, r24	; 24
-	 DDRB |= (1 << DDB3); // LED1
  3d6:	87 b3       	in	r24, 0x17	; 23
  3d8:	88 60       	ori	r24, 0x08	; 8
  3da:	87 bb       	out	0x17, r24	; 23
-	  RESET_LED3;// set to zero
  3dc:	88 b3       	in	r24, 0x18	; 24
  3de:	82 60       	ori	r24, 0x02	; 2
  3e0:	88 bb       	out	0x18, r24	; 24
-	 DDRB |= (1 << DDB2); // LED2
  3e2:	87 b3       	in	r24, 0x17	; 23
  3e4:	84 60       	ori	r24, 0x04	; 4
  3e6:	87 bb       	out	0x17, r24	; 23
-	  RESET_LED2;// set to zero
  3e8:	88 b3       	in	r24, 0x18	; 24
  3ea:	84 60       	ori	r24, 0x04	; 4
  3ec:	88 bb       	out	0x18, r24	; 24
-	 DDRB |= (1 << DDB1); // LED3
  3ee:	87 b3       	in	r24, 0x17	; 23
  3f0:	82 60       	ori	r24, 0x02	; 2
  3f2:	87 bb       	out	0x17, r24	; 23
-	  RESET_LED1;// set to zero
  3f4:	88 b3       	in	r24, 0x18	; 24
  3f6:	88 60       	ori	r24, 0x08	; 8
  3f8:	88 bb       	out	0x18, r24	; 24
-	 DDRB |= (1 << DDB0); // LED4
  3fa:	87 b3       	in	r24, 0x17	; 23
  3fc:	81 60       	ori	r24, 0x01	; 1
  3fe:	87 bb       	out	0x17, r24	; 23
-	  RESET_LED0;// set to zero
  400:	82 b3       	in	r24, 0x12	; 18
  402:	80 62       	ori	r24, 0x20	; 32
  404:	82 bb       	out	0x12, r24	; 18
-	 //another set of LEDs indicating filters statuses
-	 DDRD |= (1 << DDD6); // LED5 brush filter
  406:	81 b3       	in	r24, 0x11	; 17
  408:	80 64       	ori	r24, 0x40	; 64
  40a:	81 bb       	out	0x11, r24	; 17
-	  RESET_LED5;// set to zero
  40c:	82 b3       	in	r24, 0x12	; 18
  40e:	80 64       	ori	r24, 0x40	; 64
  410:	82 bb       	out	0x12, r24	; 18
-	 DDRD |= (1 << DDD4); // LED6
  412:	81 b3       	in	r24, 0x11	; 17
  414:	80 61       	ori	r24, 0x10	; 16
  416:	81 bb       	out	0x11, r24	; 17
-	  RESET_LED6;// set to zero
  418:	82 b3       	in	r24, 0x12	; 18
  41a:	80 61       	ori	r24, 0x10	; 16
  41c:	82 bb       	out	0x12, r24	; 18
-	  // brush socket control
-	 DDRB |= (1 << DDB7); // socket
  41e:	87 b3       	in	r24, 0x17	; 23
  420:	80 68       	ori	r24, 0x80	; 128
  422:	87 bb       	out	0x17, r24	; 23
-	 RESET_SOCKET;// set to zero 
  424:	88 b3       	in	r24, 0x18	; 24
  426:	80 68       	ori	r24, 0x80	; 128
  428:	88 bb       	out	0x18, r24	; 24
  42a:	08 95       	ret
 
 0000042c <Input_Pins_Init>:
-}
-
-// init input PINs
-void Input_Pins_Init(void){
-	//pins for min/max buttons
-	DDRD &= ~(1 << DDD2); // PD2 as input 
  42c:	81 b3       	in	r24, 0x11	; 17
  42e:	8b 7f       	andi	r24, 0xFB	; 251
  430:	81 bb       	out	0x11, r24	; 17
-	PORTD |= 1 << PORTD2; // pull up
  432:	82 b3       	in	r24, 0x12	; 18
  434:	84 60       	ori	r24, 0x04	; 4
  436:	82 bb       	out	0x12, r24	; 18
-	DDRD &= ~(1 << DDD3); // PD3 as input 
  438:	81 b3       	in	r24, 0x11	; 17
  43a:	87 7f       	andi	r24, 0xF7	; 247
  43c:	81 bb       	out	0x11, r24	; 17
-	PORTD |= 1 << PORTD3; // pull up
  43e:	82 b3       	in	r24, 0x12	; 18
  440:	88 60       	ori	r24, 0x08	; 8
  442:	82 bb       	out	0x12, r24	; 18
-	//pins for filter sensors
-	DDRD &= ~(1 << DDD1); // PD1 as input 
  444:	81 b3       	in	r24, 0x11	; 17
  446:	8d 7f       	andi	r24, 0xFD	; 253
  448:	81 bb       	out	0x11, r24	; 17
-	PORTD |= 1 << PORTD1; // pull up
  44a:	82 b3       	in	r24, 0x12	; 18
  44c:	82 60       	ori	r24, 0x02	; 2
  44e:	82 bb       	out	0x12, r24	; 18
-	DDRA &= ~(1 << DDA1); // PA1 as input for "Worek" brush filter
  450:	8a b3       	in	r24, 0x1a	; 26
  452:	8d 7f       	andi	r24, 0xFD	; 253
  454:	8a bb       	out	0x1a, r24	; 26
-	PORTA |= 1 << PORTA1; // pull up
  456:	8b b3       	in	r24, 0x1b	; 27
  458:	82 60       	ori	r24, 0x02	; 2
  45a:	8b bb       	out	0x1b, r24	; 27
-	DDRA &= ~(1 << DDA0); // PA0 as input for "brush holder"
  45c:	8a b3       	in	r24, 0x1a	; 26
  45e:	8e 7f       	andi	r24, 0xFE	; 254
  460:	8a bb       	out	0x1a, r24	; 26
-	PORTA |= 1 << PORTA0; // pull up
  462:	8b b3       	in	r24, 0x1b	; 27
  464:	81 60       	ori	r24, 0x01	; 1
  466:	8b bb       	out	0x1b, r24	; 27
-	
-	//pin for ZCD
-	DDRD &= ~(1 << DDD0); // PD0 as input for zero cross detector
  468:	81 b3       	in	r24, 0x11	; 17
  46a:	8e 7f       	andi	r24, 0xFE	; 254
  46c:	81 bb       	out	0x11, r24	; 17
-	// Configure ext interrupt
-	PCMSK2 |= 1<<PCINT11;
  46e:	85 b1       	in	r24, 0x05	; 5
  470:	81 60       	ori	r24, 0x01	; 1
  472:	85 b9       	out	0x05, r24	; 5
-	GIMSK |= 1<<PCIE2;
  474:	8b b7       	in	r24, 0x3b	; 59
  476:	80 61       	ori	r24, 0x10	; 16
  478:	8b bf       	out	0x3b, r24	; 59
  47a:	08 95       	ret
 
 0000047c <Timer0_Init>:
-	*/
-}
-
-// init timers
-void Timer0_Init(void){
-	TCNT0 = 0;
  47c:	12 be       	out	0x32, r1	; 50
-	TCCR0B |= 1<<CS02 |1<<CS00; // clkI/O/1024 (From prescaler)
  47e:	83 b7       	in	r24, 0x33	; 51
  480:	85 60       	ori	r24, 0x05	; 5
  482:	83 bf       	out	0x33, r24	; 51
  484:	08 95       	ret
 
 00000486 <Timer1_Init>:
-
-}
-
-void Timer1_Init(void){
-	 TCCR1B |= (1<<WGM12);  //CTC OCR1A, 
  486:	8e b5       	in	r24, 0x2e	; 46
  488:	88 60       	ori	r24, 0x08	; 8
  48a:	8e bd       	out	0x2e, r24	; 46
-	 TIMSK |= (1 << OCIE1A);
  48c:	89 b7       	in	r24, 0x39	; 57
  48e:	80 64       	ori	r24, 0x40	; 64
  490:	89 bf       	out	0x39, r24	; 57
  492:	08 95       	ret
 
 00000494 <Timer1_Start>:
-}
-
-void Timer1_Start(void){
-	 TCCR1B |= 1<<CS10;// clkI/O/1 (No prescaling)
  494:	8e b5       	in	r24, 0x2e	; 46
  496:	81 60       	ori	r24, 0x01	; 1
  498:	8e bd       	out	0x2e, r24	; 46
  49a:	08 95       	ret
 
 0000049c <Timer1_Stop>:
-}
-
-void Timer1_Stop(void){
-	TCCR1B &= ~(1<<CS10);//clkI/O/1 (No prescaling)
  49c:	8e b5       	in	r24, 0x2e	; 46
  49e:	8e 7f       	andi	r24, 0xFE	; 254
  4a0:	8e bd       	out	0x2e, r24	; 46

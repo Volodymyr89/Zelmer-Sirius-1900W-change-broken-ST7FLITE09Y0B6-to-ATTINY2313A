@@ -13,7 +13,7 @@
 #include "periphery_init.h"
 #include "motor_and_LED_control.h"
 
-bool button2_latch=false, button3_latch=false, set_power_max_flag=false;
+bool button2_latch=false, button3_latch=false;
 
 int main(void)
 {	
